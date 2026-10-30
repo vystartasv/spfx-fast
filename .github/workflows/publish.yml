@@ -34,13 +34,30 @@ jobs:
       - if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install chromium
       - name: Verify release tag
-        run: node -e 'if (process.env.GITHUB_REF_NAME !== `v${require("./package.json").version}`) process.exit(1)'
+        run: node -e 'const ref = process.env.GITHUB_REF_NAME; const versions = [require("./package.json").version, require("./packages/playwright/package.json").version]; if (!versions.some(version => ref === `v${version}`)) process.exit(1)'
       - run: pnpm test
       - name: Pack and validate package
         run: pnpm test:package
         env:
           SPFX_FAST_PACKAGE_ARCHIVE: ${{ runner.temp }}/spfx-fast-core-release.tgz
-      - name: Enable npm trusted publishing
+      - name: Pack Playwright package
+        run: npm pack ./packages/playwright --pack-destination "$RUNNER_TEMP"
+      - name: Install npm trusted-publishing client
         run: npm install --global npm@11.5.1
-      - name: Publish validated tarball
-        run: npm publish "$RUNNER_TEMP/spfx-fast-core-release.tgz" --access public
+      - name: Publish new package versions
+        shell: bash
+        run: |
+          core_version="$(node -p "require('./package.json').version")"
+          playwright_version="$(node -p "require('./packages/playwright/package.json').version")"
+
+          if npm view "@spfx-fast/core@$core_version" version >/dev/null 2>&1; then
+            echo "@spfx-fast/core@$core_version is already published; skipping"
+          else
+            npm publish "$RUNNER_TEMP/spfx-fast-core-release.tgz" --access public
+          fi
+
+          if npm view "@spfx-fast/playwright@$playwright_version" version >/dev/null 2>&1; then
+            echo "@spfx-fast/playwright@$playwright_version is already published; skipping"
+          else
+            npm publish "$RUNNER_TEMP/spfx-fast-playwright-$playwright_version.tgz" --access public
+          fi
