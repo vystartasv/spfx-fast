@@ -1,0 +1,25 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-component-manifest.schema.json",
+  "id": "014453c2-94c2-438a-8a58-b7e14cee9640",
+  "alias": "WorkItemsCopilotComponent",
+  "componentType": "CopilotComponent",
+  "copilotType": "Ux",
+  "version": "*",
+  "manifestVersion": 2,
+
+  "capabilities": {
+    "availableDisplayModes": ["inline", "fullscreen"]
+  },
+
+  "tools": [
+    {
+      "name": "BrowseSharePointList",
+      "description": {
+        "default": "Shows up to 50 items from an explicitly named SharePoint list. Use when the user asks to browse or summarize items and gives a site URL and exact list title. Read-only; never guesses the site or list."
+      },
+      "propertiesSchema": {
+        "id": "$../../../lib/copilotComponents/workItems/WorkItemsCopilotComponentProperties.js:default;"
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.29/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.29",
+  "version": "1.0.0",
+  "id": "2512ea9b-2c59-4cda-9a65-6918c01cf52a",
+  "developer": {
+    "name": "SPFx Fast examples",
+    "websiteUrl": "https://github.com/",
+    "privacyUrl": "https://github.com/",
+    "termsOfUseUrl": "https://github.com/"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "SharePoint List Browser",
+    "full": "SharePoint List Browser"
+  },
+  "description": {
+    "short": "Browse a SharePoint list with Copilot",
+    "full": "Read-only SharePoint list browser for Microsoft 365 Copilot"
+  },
+  "accentColor": "#FFFFFF",
+  "copilotAgents": {
+    "declarativeAgents": [
+      {
+        "id": "workItemsAgent",
+        "file": "declarativeAgent.json"
+      }
+    ]
+  },
+  "permissions": ["identity"],
+  "validDomains": []
+}

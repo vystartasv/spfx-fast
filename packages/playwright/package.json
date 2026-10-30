@@ -1,0 +1,23 @@
+{
+  "name": "@spfx-fast/playwright",
+  "version": "0.1.0",
+  "author": "Vilius Vystartas",
+  "description": "Authenticated, recipe-driven Playwright testing helpers for any SharePoint Framework project.",
+  "license": "MIT",
+  "homepage": "https://github.com/vystartasv/spfx-fast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vystartasv/spfx-fast.git",
+    "directory": "packages/playwright"
+  },
+  "bugs": { "url": "https://github.com/vystartasv/spfx-fast/issues" },
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": { ".": { "types": "./src/index.d.ts", "import": "./src/index.js" } },
+  "bin": { "spfx-fast-playwright": "./bin/spfx-fast-playwright.mjs" },
+  "files": ["src", "bin", "README.md", "LICENSE", "examples", "agent"],
+  "peerDependencies": { "@playwright/test": ">=1.50.0 <2", "playwright": ">=1.50.0 <2" },
+  "keywords": ["spfx", "sharepoint", "playwright", "e2e", "testing", "agents"]
+}

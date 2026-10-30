@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@spfx-fast/core": ["src/index.ts"],
+      "@spfx-fast/core/spfx": ["src/spfx.ts"],
+      "@spfx-fast/core/sharepoint": ["src/sharepoint.ts"],
+      "@spfx-fast/core/react": ["src/react.tsx"],
+      "@spfx-fast/core/markdown": ["src/markdown.tsx"],
+      "@spfx-fast/core/agent": ["src/agent.ts"],
+      "@spfx-fast/core/elements": ["src/elements.ts"]
+    },
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

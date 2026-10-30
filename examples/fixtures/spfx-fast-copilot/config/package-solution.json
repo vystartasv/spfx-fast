@@ -1,0 +1,42 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "spfx-fast-copilot-client-side-solution",
+    "id": "b5378334-0ff0-4aaf-8cef-35fd343abd59",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "webApiPermissionRequests": [
+      { "resource": "Microsoft Graph", "scope": "Sites.Read.All" }
+    ],
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.24.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "Browse a SharePoint list through an authenticated Copilot UX component"
+      },
+      "longDescription": {
+        "default": "A read-only Copilot UX list browser built with SPFx Fast and Fluent UI v9"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "spfx-fast-copilot Feature",
+        "description": "The feature that activates elements of the spfx-fast-copilot solution.",
+        "id": "7d26fc70-1041-4cb0-935b-e34844d5833f",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/spfx-fast-copilot.sppkg"
+  }
+}

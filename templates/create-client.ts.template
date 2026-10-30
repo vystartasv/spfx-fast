@@ -1,0 +1,8 @@
+import { SPHttpClient } from "@microsoft/sp-http";
+import type { WebPartContext } from "@microsoft/sp-webpart-base";
+import { createSPFxServices } from "@spfx-fast/core/spfx";
+
+/** Create once in web-part initialization and reuse across the app. */
+export function createAppServices(context: WebPartContext) {
+  return createSPFxServices(context, SPHttpClient.configurations.v1);
+}

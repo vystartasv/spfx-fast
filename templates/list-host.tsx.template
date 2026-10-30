@@ -1,0 +1,26 @@
+import * as React from "react";
+import { useEffect, useState } from "react";
+import type { WebPartContext } from "@microsoft/sp-webpart-base";
+import type { Theme } from "@fluentui/react-components";
+import { createAppServices } from "./createServices";
+import { {{NAME}} } from "./{{NAME}}";
+
+type Services = Awaited<ReturnType<typeof createAppServices>>;
+
+export function {{NAME}}Host({ context, theme }: { context: WebPartContext; theme?: Theme }) {
+  const [services, setServices] = useState<Services>();
+  const [error, setError] = useState<unknown>();
+
+  useEffect(() => {
+    let active = true;
+    createAppServices(context).then(
+      (value) => { if (active) setServices(value); },
+      (reason: unknown) => { if (active) setError(reason); },
+    );
+    return () => { active = false; };
+  }, [context]);
+
+  if (error) return <div role="alert">Unable to connect to SharePoint: {error instanceof Error ? error.message : String(error)}</div>;
+  if (!services) return <div role="status">Connecting to SharePoint…</div>;
+  return <{{NAME}} client={services.client} theme={theme} />;
+}

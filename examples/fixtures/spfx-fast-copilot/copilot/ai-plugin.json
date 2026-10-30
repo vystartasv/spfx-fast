@@ -1,0 +1,9 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.4/schema.json",
+  "schema_version": "v2.4",
+  "namespace": "workItems",
+  "name_for_human": "SharePoint List Browser",
+  "description_for_human": "Browse a SharePoint list and summarize its first 50 accessible items.",
+  "description_for_model": "Read-only SharePoint list browser. Uses the signed-in user's permissions and returns a bounded list view.",
+  "contact_email": "publisher@contoso.com"
+}

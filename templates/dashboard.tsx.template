@@ -1,0 +1,100 @@
+import * as React from "react";
+import { Button, Card, Dialog, DialogActions, DialogBody, DialogContent, DialogSurface, DialogTitle, FluentProvider, MessageBar, MessageBarBody, Text, makeStyles, tokens, webLightTheme, type Theme } from "@fluentui/react-components";
+import { DetailView, ItemForm, ListView, useItems, useListItems, type FieldDefinition } from "@spfx-fast/core/react";
+import { createClient, type GraphListItem, type GraphListItemFilter } from "@spfx-fast/core";
+
+const siteId = {{SITE_ID}};
+type Client = ReturnType<typeof createClient>;
+type Source = { title: string; listId: string; fields: FieldDefinition[]; filter?: GraphListItemFilter; pageSize?: number; maxItems?: number };
+const sources: Source[] = {{SOURCES}};
+const useStyles = makeStyles({ root: { display: "grid", gap: tokens.spacingVerticalL }, card: { display: "grid", gap: tokens.spacingVerticalM }, header: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: tokens.spacingHorizontalM, flexWrap: "wrap" }, actions: { display: "flex", gap: tokens.spacingHorizontalS } });
+
+function DashboardList({ client, source }: { client: Client; source: Source }) {
+  const styles = useStyles();
+  const queryFields = source.fields.reduce<string[]>((result, field) => {
+    result.push(field.name);
+    if (field.type === "person" || field.type === "lookup") result.push(`${field.name}LookupId`);
+    return result;
+  }, []);
+  const local = useItems(client, siteId, source.listId, { fields: queryFields, maxItems: 1000, sync: !source.filter });
+  const paged = useListItems(client, siteId, source.listId, { fields: queryFields, filter: source.filter, pageSize: source.pageSize, maxItems: source.maxItems, enabled: Boolean(source.filter) });
+  const items = source.filter ? paged.items : local.items;
+  const dataSource = source.filter ? paged.source : local.source;
+  const loading = source.filter ? paged.loading : local.loading;
+  const error = source.filter ? paged.error : local.error;
+  const refresh = source.filter ? paged.refresh : local.refresh;
+  const [selected, setSelected] = React.useState<GraphListItem>();
+  const [editing, setEditing] = React.useState(false);
+  const [pendingDelete, setPendingDelete] = React.useState<GraphListItem>();
+  const [deleteError, setDeleteError] = React.useState<unknown>();
+  const fields = source.fields;
+
+  async function save(values: Record<string, unknown>) {
+    if (selected) await client.updateItem(siteId, source.listId, selected.id, values);
+    else await client.createItem(siteId, source.listId, values);
+    setSelected(undefined);
+    setEditing(false);
+    await refresh();
+  }
+
+  async function removeSelected() {
+    if (!pendingDelete) return;
+    setDeleteError(undefined);
+    try {
+      await client.deleteItem(siteId, source.listId, pendingDelete.id);
+      setPendingDelete(undefined);
+      setSelected(undefined);
+      await refresh();
+    } catch (error) {
+      setDeleteError(error);
+    }
+  }
+
+  return (
+    <Card className={styles.card}>
+      <div className={styles.header}>
+        <div><h3>{source.title}</h3><Text>{dataSource === "cache" ? `Showing cached data · ${items.length} items` : loading ? "Loading…" : `${items.length} items · ${dataSource === "network" ? "synced" : "local only"}`}</Text></div>
+        <Button appearance="primary" onClick={() => { setSelected(undefined); setEditing(true); }}>New item</Button>
+      </div>
+      <ListView items={items} fields={fields} loading={loading} error={error} onSelect={(item) => { setSelected(item); setEditing(false); }} />
+      {source.filter && paged.hasMore ? <Button onClick={() => void paged.loadMore()}>Load more</Button> : null}
+      {selected && !editing ? <>
+        <DetailView item={selected} fields={fields} />
+        <div className={styles.actions}>
+          <Button onClick={() => setEditing(true)}>Edit</Button>
+          <Button appearance="secondary" onClick={() => setPendingDelete(selected)}>Delete</Button>
+        </div>
+      </> : null}
+      {editing ? <>
+        <h4>{selected ? "Edit item" : "New item"}</h4>
+        <ItemForm key={selected?.id ?? "new-item"} fields={fields} initial={selected?.fields} submitLabel={selected ? "Save changes" : "Create item"} onSubmit={save} />
+        <Button onClick={() => { setEditing(false); setSelected(undefined); }}>Cancel</Button>
+      </> : null}
+      <Dialog open={Boolean(pendingDelete)} onOpenChange={(_, data) => { if (!data.open) setPendingDelete(undefined); }}>
+        <DialogSurface>
+          <DialogBody>
+            <DialogTitle>Delete this item?</DialogTitle>
+            <DialogContent>This permanently deletes “{String(pendingDelete?.fields?.Title ?? "this item")}” from {source.title}.</DialogContent>
+            {deleteError ? <MessageBar intent="error"><MessageBarBody>Delete failed. Check access and try again.</MessageBarBody></MessageBar> : null}
+            <DialogActions>
+              <Button onClick={() => { setPendingDelete(undefined); setDeleteError(undefined); }}>Cancel</Button>
+              <Button appearance="primary" onClick={() => void removeSelected()}>Delete item</Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
+    </Card>
+  );
+}
+
+export function {{NAME}}({ client, theme = webLightTheme }: { client: Client; theme?: Theme }) {
+  const styles = useStyles();
+  return (
+    <FluentProvider theme={theme}>
+      <main className={styles.root}>
+        <h2>{{TITLE}}</h2>
+        {sources.map((source) => <DashboardList key={source.listId} client={client} source={source} />)}
+      </main>
+    </FluentProvider>
+  );
+}

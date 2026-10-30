@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "spfx-fast-dashboard-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/spfxFastDashboard/SpfxFastDashboardWebPart.js",
+          "manifest": "./src/webparts/spfxFastDashboard/SpfxFastDashboardWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "SpfxFastDashboardWebPartStrings": "lib/webparts/spfxFastDashboard/loc/{locale}.js"
+  }
+}

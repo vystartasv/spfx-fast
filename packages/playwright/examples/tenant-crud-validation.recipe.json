@@ -1,0 +1,11 @@
+{
+  "name": "SPFx Fast single-item Graph CRUD validation",
+  "steps": [
+    { "action": "navigate", "path": "/sites/your-site/SitePages/tenant-validation.aspx" },
+    { "action": "assertPageReady" },
+    { "action": "assertAuthenticated" },
+    { "action": "assertVisible", "locator": { "role": "button", "name": "Test list CRUD" } },
+    { "action": "click", "locator": { "role": "button", "name": "Test list CRUD" }, "confirm": true },
+    { "action": "assertText", "locator": { "text": "Create, read, update, read, and delete succeeded for one temporary list item." }, "expected": "Create, read, update, read, and delete succeeded for one temporary list item.", "exact": false }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "whichFolder": "subdir",
+    "solutionName": "spfx-fast-dashboard",
+    "environment": "spo",
+    "packageManager": "npm",
+    "skipFeatureDeployment": true,
+    "useGulp": false,
+    "componentType": "webpart",
+    "template": "react",
+    "componentName": "SpfxFastDashboard",
+    "componentDescription": "Authenticated SPFx Fast dashboard fixture",
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.22.1",
+    "sdksVersions": {},
+    "version": "1.24.0",
+    "libraryName": "spfx-fast-dashboard",
+    "libraryId": "bdee7b96-544b-46bc-bfbd-4da615b19707",
+    "solutionShortDescription": "spfx-fast-dashboard description"
+  }
+}

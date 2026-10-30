@@ -1,0 +1,139 @@
+{
+  "name": "@spfx-fast/core",
+  "version": "0.2.11",
+  "author": "Vilius Vystartas",
+  "description": "Build cached SPFx apps with authenticated Graph, REST, React hooks, and Fluent UI v9.",
+  "homepage": "https://github.com/vystartasv/spfx-fast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vystartasv/spfx-fast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vystartasv/spfx-fast/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "spfx",
+    "sharepoint-framework",
+    "sharepoint",
+    "sharepoint-rest",
+    "caml",
+    "sharepoint-lists",
+    "microsoft-graph",
+    "fluent-ui",
+    "indexeddb",
+    "agent-skills"
+  ],
+  "type": "module",
+  "workspaces": [
+    "packages/playwright"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./spfx": {
+      "types": "./dist/spfx.d.ts",
+      "import": "./dist/spfx.js"
+    },
+    "./sharepoint": {
+      "types": "./dist/sharepoint.d.ts",
+      "import": "./dist/sharepoint.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js"
+    },
+    "./markdown": {
+      "types": "./dist/markdown.d.ts",
+      "import": "./dist/markdown.js"
+    },
+    "./agent": {
+      "types": "./dist/agent.d.ts",
+      "import": "./dist/agent.js"
+    },
+    "./elements": {
+      "types": "./dist/elements.d.ts",
+      "import": "./dist/elements.js"
+    },
+    "./capabilities.json": "./agent/capabilities.json"
+  },
+  "bin": {
+    "spfx-fast": "bin/spfx-fast.mjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "agent",
+    "skills",
+    "templates",
+    "examples",
+    "docs",
+    "README.md",
+    "!examples/fixtures/**/node_modules/**",
+    "!examples/fixtures/**/dist/**",
+    "!examples/fixtures/**/lib/**",
+    "!examples/fixtures/**/lib-dts/**",
+    "!examples/fixtures/**/sharepoint/**",
+    "!examples/fixtures/**/solution/**",
+    "!examples/fixtures/**/temp/**",
+    "!examples/fixtures/**/teams/**",
+    "!examples/fixtures/**/.heft/**"
+  ],
+  "scripts": {
+    "build": "node scripts/clean-dist.mjs && tsc -p tsconfig.json && tsc -p tsconfig.examples.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.examples.json",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "test:package": "npm run build && node scripts/package-smoke.mjs",
+    "test:spfx-fixture": "npm run build && node scripts/build-fixture.mjs dashboard",
+    "test:copilot-fixture": "npm run build && node scripts/build-fixture.mjs copilot",
+    "test:browser": "npm run build && node scripts/browser-a11y.mjs",
+    "benchmark": "npm run build && node benchmarks/perf.mjs",
+    "benchmark:browser": "npm run build && node scripts/browser-perf.mjs",
+    "docs:use-cases": "node scripts/render-use-cases.mjs",
+    "spfx-fast": "node bin/spfx-fast.mjs"
+  },
+  "peerDependencies": {
+    "@fluentui/react-components": "^9.75.0",
+    "@types/react": "^18.0.0",
+    "react": "^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@fluentui/react-components": {
+      "optional": true
+    },
+    "@types/react": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@fluentui/react-components": "^9.75.0",
+    "@playwright/test": "1.63.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "axe-core": "^4.14.0",
+    "esbuild": "^0.28.2",
+    "fake-indexeddb": "^6.2.6",
+    "playwright": "1.63.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "typescript": "~5.8.3"
+  },
+  "dependencies": {
+    "react-markdown": "^10.1.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.1"
+  }
+}

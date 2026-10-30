@@ -1,0 +1,357 @@
+{
+  "scenarios": [
+    {
+      "id": "equipment-request",
+      "name": "Equipment requests",
+      "description": "Request devices or supplies and track approval and fulfillment.",
+      "automation": ["Power Automate can start an approval on item creation, update Status, and notify the requester."],
+      "fields": [
+        { "name": "Title", "title": "Request", "type": "text", "required": true },
+        { "name": "Requester", "title": "Requester (claims login or email)", "type": "text", "required": true },
+        { "name": "DeviceType", "title": "Device type", "type": "choice", "choices": ["Laptop", "Monitor", "Phone", "Other"] },
+        { "name": "Justification", "title": "Business justification", "type": "multiline", "required": true },
+        { "name": "EstimatedCost", "title": "Estimated cost", "type": "number" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Submitted", "Approved", "Rejected", "Ordered", "Fulfilled"] }
+      ]
+    },
+    {
+      "id": "leave-request",
+      "name": "Leave requests",
+      "description": "Submit time-off requests and track decision and dates.",
+      "automation": ["Power Automate can route approval to a manager and notify the employee of the decision."],
+      "fields": [
+        { "name": "Title", "title": "Request", "type": "text", "required": true },
+        { "name": "Employee", "title": "Employee", "type": "text", "required": true },
+        { "name": "StartDate", "title": "Start date", "type": "date", "required": true },
+        { "name": "EndDate", "title": "End date", "type": "date", "required": true },
+        { "name": "LeaveType", "title": "Leave type", "type": "choice", "choices": ["Annual", "Sick", "Unpaid", "Other"] },
+        { "name": "Reason", "title": "Reason", "type": "multiline" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Submitted", "Approved", "Rejected", "Cancelled"] }
+      ]
+    },
+    {
+      "id": "purchase-request",
+      "name": "Purchase requests",
+      "description": "Track purchase requests, amounts, suppliers, and approval status.",
+      "automation": ["Power Automate can route requests by amount, wait for approval, and send a receipt or rejection notice."],
+      "fields": [
+        { "name": "Title", "title": "Purchase", "type": "text", "required": true },
+        { "name": "Requester", "title": "Requester", "type": "text", "required": true },
+        { "name": "Supplier", "title": "Supplier", "type": "text" },
+        { "name": "Amount", "title": "Amount", "type": "number", "required": true },
+        { "name": "NeededBy", "title": "Needed by", "type": "date" },
+        { "name": "Justification", "title": "Justification", "type": "multiline" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Submitted", "Pending approval", "Approved", "Rejected", "Ordered"] }
+      ]
+    },
+    {
+      "id": "issue-reporting",
+      "name": "Issue reporting",
+      "description": "Let employees report issues and let managers triage and resolve them.",
+      "automation": ["Power Automate can notify the assigned team, create a Planner task, or post a Teams message."],
+      "fields": [
+        { "name": "Title", "title": "Issue", "type": "text", "required": true },
+        { "name": "Description", "title": "What happened?", "type": "multiline", "required": true },
+        { "name": "Category", "title": "Category", "type": "choice", "choices": ["Facilities", "IT", "Safety", "Customer", "Other"] },
+        { "name": "Severity", "title": "Severity", "type": "choice", "choices": ["Low", "Medium", "High", "Critical"] },
+        { "name": "Location", "title": "Location", "type": "text" },
+        { "name": "AssignedTo", "title": "Assigned to (claims login or email)", "type": "text" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["New", "In progress", "Blocked", "Resolved", "Closed"] }
+      ]
+    },
+    {
+      "id": "inspection",
+      "name": "Inspections",
+      "description": "Capture area, vehicle, equipment, or quality inspections and follow-up.",
+      "automation": ["Power Automate can route failed inspections to a responsible manager and remind owners about overdue actions."],
+      "fields": [
+        { "name": "Title", "title": "Inspection", "type": "text", "required": true },
+        { "name": "Location", "title": "Location or asset", "type": "text", "required": true },
+        { "name": "Inspector", "title": "Inspector", "type": "text" },
+        { "name": "InspectionDate", "title": "Inspection date", "type": "date", "required": true },
+        { "name": "Result", "title": "Result", "type": "choice", "choices": ["Pass", "Needs attention", "Fail"] },
+        { "name": "Findings", "title": "Findings", "type": "multiline" },
+        { "name": "FollowUpRequired", "title": "Follow-up required", "type": "boolean" }
+      ]
+    },
+    {
+      "id": "asset-register",
+      "name": "Asset register",
+      "description": "Track equipment ownership, location, lifecycle, and service status.",
+      "automation": ["Power Automate can send assignment notices and scheduled warranty or maintenance reminders."],
+      "fields": [
+        { "name": "Title", "title": "Asset", "type": "text", "required": true },
+        { "name": "AssetTag", "title": "Asset tag", "type": "text", "required": true },
+        { "name": "Category", "title": "Category", "type": "choice", "choices": ["Computer", "Mobile", "Vehicle", "Equipment", "Other"] },
+        { "name": "SerialNumber", "title": "Serial number", "type": "text" },
+        { "name": "AssignedTo", "title": "Assigned to (claims login or email)", "type": "text" },
+        { "name": "Location", "title": "Location", "type": "text" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Available", "Assigned", "Repair", "Retired"] }
+      ]
+    },
+    {
+      "id": "inventory",
+      "name": "Inventory and stock",
+      "description": "Track stock counts, reorder thresholds, and supply locations.",
+      "automation": ["Power Automate can send a low-stock notice when Quantity falls below ReorderLevel."],
+      "fields": [
+        { "name": "Title", "title": "Item", "type": "text", "required": true },
+        { "name": "SKU", "title": "SKU", "type": "text", "required": true },
+        { "name": "Quantity", "title": "Quantity on hand", "type": "number", "required": true },
+        { "name": "ReorderLevel", "title": "Reorder level", "type": "number" },
+        { "name": "Location", "title": "Storage location", "type": "text" },
+        { "name": "Supplier", "title": "Supplier", "type": "text" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["In stock", "Low stock", "Out of stock", "Discontinued"] }
+      ]
+    },
+    {
+      "id": "onboarding-checklist",
+      "name": "Onboarding checklist",
+      "description": "Assign, track, and complete employee onboarding tasks.",
+      "automation": ["Power Automate can create checklist rows from a starter template and send due-date reminders."],
+      "fields": [
+        { "name": "Title", "title": "Task", "type": "text", "required": true },
+        { "name": "Employee", "title": "Employee", "type": "text", "required": true },
+        { "name": "Owner", "title": "Task owner", "type": "text" },
+        { "name": "DueDate", "title": "Due date", "type": "date" },
+        { "name": "Department", "title": "Department", "type": "text" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Not started", "In progress", "Waiting", "Complete"] }
+      ]
+    },
+    {
+      "id": "project-tracker",
+      "name": "Project tracker",
+      "description": "Track project owners, milestones, due dates, and progress.",
+      "automation": ["Power Automate can send due-date reminders and a weekly digest of changed or overdue projects."],
+      "fields": [
+        { "name": "Title", "title": "Project or milestone", "type": "text", "required": true },
+        { "name": "Owner", "title": "Owner", "type": "text" },
+        { "name": "StartDate", "title": "Start date", "type": "date" },
+        { "name": "DueDate", "title": "Due date", "type": "date" },
+        { "name": "Progress", "title": "Progress percent", "type": "number" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Planned", "Active", "At risk", "Complete", "On hold"] }
+      ]
+    },
+    {
+      "id": "event-calendar",
+      "name": "Event and content calendar",
+      "description": "Plan events or publications by date, channel, owner, and approval status.",
+      "automation": ["Power Automate can send reminders, route drafts for approval, and notify the publishing team."],
+      "fields": [
+        { "name": "Title", "title": "Event or content", "type": "text", "required": true },
+        { "name": "PublishDate", "title": "Date", "type": "date", "required": true },
+        { "name": "ContentType", "title": "Type", "type": "choice", "choices": ["Event", "Article", "Announcement", "Social post", "Other"] },
+        { "name": "Channel", "title": "Channel", "type": "text" },
+        { "name": "Owner", "title": "Owner", "type": "text" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Idea", "Draft", "Review", "Approved", "Published"] }
+      ]
+    },
+    {
+      "id": "employee-ideas",
+      "name": "Employee ideas",
+      "description": "Collect ideas, categorize them, and track review and implementation.",
+      "automation": ["Power Automate can acknowledge submissions and notify campaign reviewers."],
+      "fields": [
+        { "name": "Title", "title": "Idea", "type": "text", "required": true },
+        { "name": "SubmittedBy", "title": "Submitted by", "type": "text" },
+        { "name": "Category", "title": "Category", "type": "choice", "choices": ["Customer", "Safety", "Quality", "Efficiency", "Other"] },
+        { "name": "Description", "title": "Description", "type": "multiline", "required": true },
+        { "name": "Impact", "title": "Expected impact", "type": "multiline" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Submitted", "Reviewing", "Accepted", "Declined", "Implemented"] }
+      ]
+    },
+    {
+      "id": "service-desk",
+      "name": "Service desk requests",
+      "description": "Triage requests by category and priority, assign an owner, and track resolution.",
+      "automation": ["Power Automate can route by category, notify the assigned team, and send resolution updates."],
+      "fields": [
+        { "name": "Title", "title": "Request", "type": "text", "required": true },
+        { "name": "Requester", "title": "Requester", "type": "text" },
+        { "name": "Category", "title": "Category", "type": "choice", "choices": ["Access", "Hardware", "Software", "Facilities", "Other"] },
+        { "name": "Priority", "title": "Priority", "type": "choice", "choices": ["Low", "Normal", "High", "Urgent"] },
+        { "name": "Description", "title": "Description", "type": "multiline", "required": true },
+        { "name": "AssignedTo", "title": "Assigned to (claims login or email)", "type": "text" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["New", "Assigned", "In progress", "Waiting", "Resolved"] }
+      ]
+    },
+    {
+      "id": "document-review",
+      "name": "Document review and approval",
+      "description": "Track document owner, reviewer, review due date, and approval outcome.",
+      "automation": ["Use a document library trigger and a Power Automate approval; update SharePoint content approval status with the file ETag."],
+      "fields": [
+        { "name": "Title", "title": "Document", "type": "text", "required": true },
+        { "name": "DocumentUrl", "title": "Document link", "type": "text" },
+        { "name": "Owner", "title": "Owner", "type": "text" },
+        { "name": "Reviewer", "title": "Reviewer", "type": "text" },
+        { "name": "ReviewDue", "title": "Review due", "type": "date" },
+        { "name": "ApprovalStatus", "title": "Approval status", "type": "choice", "choices": ["Draft", "Pending", "Approved", "Rejected", "Expired"] },
+        { "name": "Comments", "title": "Comments", "type": "multiline" }
+      ]
+    },
+    {
+      "id": "maintenance-work-order",
+      "name": "Maintenance work orders",
+      "description": "Report an asset issue, schedule work, and track its completion.",
+      "automation": ["Power Automate can route urgent work orders and remind assignees before the due date."],
+      "fields": [
+        { "name": "Title", "title": "Work order", "type": "text", "required": true },
+        { "name": "AssetTag", "title": "Asset tag", "type": "text" },
+        { "name": "Priority", "title": "Priority", "type": "choice", "choices": ["Low", "Normal", "High", "Emergency"] },
+        { "name": "ReportedDate", "title": "Reported date", "type": "date" },
+        { "name": "AssignedTo", "title": "Assigned to", "type": "text" },
+        { "name": "DueDate", "title": "Due date", "type": "date" },
+        { "name": "Resolution", "title": "Resolution", "type": "multiline" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Reported", "Scheduled", "In progress", "Blocked", "Complete"] }
+      ]
+    },
+    {
+      "id": "risk-register",
+      "name": "Risk register",
+      "description": "Record risks, rate likelihood and impact, and track mitigations.",
+      "automation": ["Power Automate can escalate critical risks and send periodic review digests."],
+      "fields": [
+        { "name": "Title", "title": "Risk", "type": "text", "required": true },
+        { "name": "Category", "title": "Category", "type": "choice", "choices": ["Delivery", "Security", "Compliance", "People", "Financial", "Other"] },
+        { "name": "Likelihood", "title": "Likelihood", "type": "choice", "choices": ["Low", "Medium", "High"] },
+        { "name": "Impact", "title": "Impact", "type": "choice", "choices": ["Low", "Medium", "High"] },
+        { "name": "Owner", "title": "Owner", "type": "text" },
+        { "name": "Mitigation", "title": "Mitigation", "type": "multiline" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Open", "Mitigating", "Accepted", "Closed"] }
+      ]
+    },
+    {
+      "id": "meeting-actions",
+      "name": "Meeting actions",
+      "description": "Capture meeting decisions and follow-up actions with owners and due dates.",
+      "automation": ["Power Automate can send action assignments and recurring overdue-action digests."],
+      "fields": [
+        { "name": "Title", "title": "Action or decision", "type": "text", "required": true },
+        { "name": "MeetingDate", "title": "Meeting date", "type": "date" },
+        { "name": "Owner", "title": "Owner", "type": "text" },
+        { "name": "DueDate", "title": "Due date", "type": "date" },
+        { "name": "Priority", "title": "Priority", "type": "choice", "choices": ["Low", "Normal", "High"] },
+        { "name": "Notes", "title": "Notes", "type": "multiline" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Open", "In progress", "Blocked", "Done"] }
+      ]
+    },
+    {
+      "id": "policy-acknowledgement",
+      "name": "Policy acknowledgements",
+      "description": "Track policy assignment and employee acknowledgement.",
+      "automation": ["Power Automate can assign acknowledgements to a group and remind employees who have not responded."],
+      "fields": [
+        { "name": "Title", "title": "Policy", "type": "text", "required": true },
+        { "name": "Employee", "title": "Employee", "type": "text", "required": true },
+        { "name": "AssignedDate", "title": "Assigned date", "type": "date" },
+        { "name": "Acknowledged", "title": "Acknowledged", "type": "boolean" },
+        { "name": "AcknowledgedDate", "title": "Acknowledged date", "type": "date" },
+        { "name": "PolicyVersion", "title": "Policy version", "type": "text" }
+      ]
+    },
+    {
+      "id": "bulletin-board",
+      "name": "Company bulletins",
+      "description": "Publish and manage internal announcements with effective dates.",
+      "automation": ["Power Automate can notify a target audience when a bulletin is published and send expiry reminders."],
+      "fields": [
+        { "name": "Title", "title": "Headline", "type": "text", "required": true },
+        { "name": "Body", "title": "Announcement", "type": "multiline", "required": true },
+        { "name": "Category", "title": "Category", "type": "choice", "choices": ["Company", "People", "Benefits", "IT", "Other"] },
+        { "name": "Audience", "title": "Audience description", "type": "text" },
+        { "name": "PublishDate", "title": "Publish date", "type": "date" },
+        { "name": "ExpiresOn", "title": "Expiry date", "type": "date" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Draft", "Review", "Published", "Expired"] }
+      ]
+    },
+    {
+      "id": "topic-qa",
+      "name": "Topics and Q&A",
+      "description": "Collect questions by topic and track answers and follow-up.",
+      "automation": ["Power Automate can notify topic owners of unanswered questions and alert question authors when answered."],
+      "fields": [
+        { "name": "Title", "title": "Question", "type": "text", "required": true },
+        { "name": "Topic", "title": "Topic", "type": "choice", "choices": ["People", "Process", "Tools", "Other"] },
+        { "name": "AskedBy", "title": "Asked by", "type": "text" },
+        { "name": "Answer", "title": "Answer", "type": "multiline" },
+        { "name": "AnsweredBy", "title": "Answered by", "type": "text" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Open", "Answered", "Archived"] }
+      ]
+    },
+    {
+      "id": "skills-directory",
+      "name": "Skills directory",
+      "description": "Maintain a searchable, opt-in directory of colleague skills and interests.",
+      "automation": ["Use the authenticated SharePoint user/profile helpers for directory discovery when appropriate; a list-backed profile is separately maintained and must have suitable visibility."],
+      "fields": [
+        { "name": "Title", "title": "Display name", "type": "text", "required": true },
+        { "name": "Department", "title": "Department", "type": "text" },
+        { "name": "Skills", "title": "Skills", "type": "multiline" },
+        { "name": "Office", "title": "Office or region", "type": "text" },
+        { "name": "Interests", "title": "Interests", "type": "multiline" },
+        { "name": "AvailableForMentoring", "title": "Available for mentoring", "type": "boolean" }
+      ]
+    },
+    {
+      "id": "training-tracker",
+      "name": "Training tracker",
+      "description": "Assign courses and track due dates and completion.",
+      "automation": ["Power Automate can assign training, remind learners, and notify managers of overdue completion."],
+      "fields": [
+        { "name": "Title", "title": "Course", "type": "text", "required": true },
+        { "name": "Employee", "title": "Employee", "type": "text", "required": true },
+        { "name": "DueDate", "title": "Due date", "type": "date" },
+        { "name": "Completed", "title": "Completed", "type": "boolean" },
+        { "name": "CompletionDate", "title": "Completion date", "type": "date" },
+        { "name": "Score", "title": "Score", "type": "number" }
+      ]
+    },
+    {
+      "id": "travel-request",
+      "name": "Travel requests",
+      "description": "Request business travel and track dates, destination, cost, and approval.",
+      "automation": ["Power Automate can route travel approval, notify the traveler, and create follow-up tasks."],
+      "fields": [
+        { "name": "Title", "title": "Trip", "type": "text", "required": true },
+        { "name": "Traveller", "title": "Traveller", "type": "text", "required": true },
+        { "name": "Destination", "title": "Destination", "type": "text", "required": true },
+        { "name": "StartDate", "title": "Departure date", "type": "date" },
+        { "name": "EndDate", "title": "Return date", "type": "date" },
+        { "name": "EstimatedCost", "title": "Estimated cost", "type": "number" },
+        { "name": "Purpose", "title": "Business purpose", "type": "multiline" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Submitted", "Pending approval", "Approved", "Rejected", "Completed"] }
+      ]
+    },
+    {
+      "id": "expense-claim",
+      "name": "Expense claims",
+      "description": "Submit expense claims and track review and reimbursement status.",
+      "automation": ["Power Automate can route claims by amount and notify the employee after review."],
+      "fields": [
+        { "name": "Title", "title": "Claim", "type": "text", "required": true },
+        { "name": "Employee", "title": "Employee", "type": "text", "required": true },
+        { "name": "ExpenseDate", "title": "Expense date", "type": "date" },
+        { "name": "Amount", "title": "Amount", "type": "number", "required": true },
+        { "name": "CostCenter", "title": "Cost center", "type": "text" },
+        { "name": "ReceiptLink", "title": "Receipt link (use a secured library)", "type": "text" },
+        { "name": "Status", "title": "Status", "type": "choice", "choices": ["Submitted", "Reviewing", "Approved", "Rejected", "Reimbursed"] }
+      ]
+    },
+    {
+      "id": "visitor-log",
+      "name": "Visitor log",
+      "description": "Record expected visits, hosts, purpose, and arrival/departure state.",
+      "automation": ["Power Automate can notify hosts about arrivals and send a daily reception digest."],
+      "fields": [
+        { "name": "Title", "title": "Visit", "type": "text", "required": true },
+        { "name": "VisitorName", "title": "Visitor name", "type": "text" },
+        { "name": "Host", "title": "Host", "type": "text" },
+        { "name": "VisitDate", "title": "Visit date", "type": "date" },
+        { "name": "Purpose", "title": "Purpose", "type": "text" },
+        { "name": "CheckedIn", "title": "Checked in", "type": "boolean" },
+        { "name": "CheckedOut", "title": "Checked out", "type": "boolean" }
+      ]
+    }
+  ]
+}

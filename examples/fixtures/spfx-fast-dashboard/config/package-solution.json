@@ -1,0 +1,49 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "spfx-fast-dashboard-client-side-solution",
+    "id": "bdee7b96-544b-46bc-bfbd-4da615b19707",
+    "version": "1.0.0.62",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Sites.ReadWrite.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Calendars.ReadBasic"
+      }
+    ],
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.24.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "spfx-fast-dashboard description"
+      },
+      "longDescription": {
+        "default": "spfx-fast-dashboard description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "spfx-fast-dashboard Feature",
+        "description": "The feature that activates elements of the spfx-fast-dashboard solution.",
+        "id": "f30c3290-2b6b-4226-a220-80c88bdb6047",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/spfx-fast-dashboard.sppkg"
+  }
+}

@@ -1,0 +1,40 @@
+import * as React from "react";
+import { useState } from "react";
+import { Button, FluentProvider, makeStyles, tokens, webLightTheme, type Theme } from "@fluentui/react-components";
+import { DetailView, ItemForm, ListView, useItems, type FieldDefinition } from "@spfx-fast/core/react";
+import { createClient } from "@spfx-fast/core";
+import type { GraphListItem } from "@spfx-fast/core";
+
+const siteId = {{SITE_ID}};
+const listId = {{LIST_ID}};
+const fields: FieldDefinition[] = {{FIELDS}};
+type Client = ReturnType<typeof createClient>;
+const useStyles = makeStyles({ root: { display: "flex", flexDirection: "column", rowGap: tokens.spacingVerticalL } });
+
+export function {{NAME}}({ client, theme = webLightTheme }: { client: Client; theme?: Theme }) {
+  const styles = useStyles();
+  const { items, loading, error } = useItems(client, siteId, listId, {
+    fields: fields.map((field) => field.name),
+  });
+  const [selected, setSelected] = useState<GraphListItem>();
+
+  return (
+    <FluentProvider theme={theme}>
+      <div className={styles.root}>
+        <h2>{{TITLE}}</h2>
+        <ListView items={items} fields={fields} loading={loading} error={error} onSelect={setSelected} />
+        {selected ? <DetailView item={selected} fields={fields} /> : null}
+        <Button onClick={() => setSelected(undefined)}>New item</Button>
+        <ItemForm
+          key={selected?.id ?? "new-item"}
+          fields={fields}
+          initial={selected?.fields}
+          submitLabel={selected ? "Save changes" : "Create item"}
+          onSubmit={(values) => selected
+            ? client.updateItem(siteId, listId, selected.id, values).then(() => setSelected(undefined))
+            : client.createItem(siteId, listId, values).then(() => undefined)}
+        />
+      </div>
+    </FluentProvider>
+  );
+}

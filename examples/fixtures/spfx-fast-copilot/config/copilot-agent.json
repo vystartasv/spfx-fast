@@ -1,0 +1,16 @@
+{
+  "$schema": "../node_modules/@microsoft/spfx-heft-plugins/lib-commonjs/plugins/copilotAgentPlugin/copilot-agent.schema.json",
+  "agents": [
+    {
+      "name": {
+        "default": "SharePoint List Browser"
+      },
+      "description": {
+        "default": "Browse a named SharePoint list through the signed-in user's permissions."
+      },
+      "components": [
+        "014453c2-94c2-438a-8a58-b7e14cee9640"
+      ]
+    }
+  ]
+}

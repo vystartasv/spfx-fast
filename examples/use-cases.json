@@ -1,0 +1,176 @@
+{
+  "flowPatterns": [
+    { "id": "none", "name": "No flow required", "summary": "The app handles the work directly." },
+    { "id": "approval", "name": "Approval", "summary": "Start approval, update the decision, and notify the requester." },
+    { "id": "notify", "name": "Notification", "summary": "Notify an owner or team when a relevant item is created or changed." },
+    { "id": "reminder", "name": "Due-date reminder", "summary": "Run on a schedule, find due work, and send a reminder." },
+    { "id": "digest", "name": "Scheduled digest", "summary": "Group open or overdue work and send a periodic summary." },
+    { "id": "file-approval", "name": "Document approval", "summary": "Approve a file, set its content status, then route it to a folder." },
+    { "id": "routing", "name": "Request routing", "summary": "Assign work based on category, location, priority, or amount." },
+    { "id": "low-stock", "name": "Low-stock alert", "summary": "Compare quantity to reorder level and alert purchasing." },
+    { "id": "sync", "name": "Cross-system sync", "summary": "Use an approved connector, stable key, and idempotent upsert." },
+    { "id": "file-process", "name": "File processing", "summary": "Read file metadata or content, classify it, and route the result." }
+  ],
+  "categories": [
+    {
+      "id": "requests",
+      "name": "Requests and approvals",
+      "useCases": [
+        { "id": "laptop-request", "name": "Laptop request", "preset": "equipment-request", "flow": "approval" },
+        { "id": "monitor-request", "name": "Monitor or phone request", "preset": "equipment-request", "flow": "approval" },
+        { "id": "software-license-request", "name": "Software license request", "preset": "equipment-request", "flow": "approval" },
+        { "id": "office-supplies-request", "name": "Office supplies request", "preset": "purchase-request", "flow": "approval" },
+        { "id": "purchase-request-standard", "name": "Purchase request", "preset": "purchase-request", "flow": "approval" },
+        { "id": "travel-approval", "name": "Business travel request", "preset": "travel-request", "flow": "approval" },
+        { "id": "time-off-request", "name": "Time off request", "preset": "leave-request", "flow": "approval", "sensitive": true },
+        { "id": "expense-reimbursement", "name": "Expense reimbursement", "preset": "expense-claim", "flow": "approval", "sensitive": true },
+        { "id": "budget-exception", "name": "Budget exception request", "preset": "purchase-request", "flow": "approval" },
+        { "id": "overtime-request", "name": "Overtime request", "preset": "leave-request", "flow": "approval", "sensitive": true }
+      ]
+    },
+    {
+      "id": "people",
+      "name": "People and workforce",
+      "useCases": [
+        { "id": "employee-onboarding", "name": "Employee onboarding", "preset": "onboarding-checklist", "flow": "notify", "sensitive": true },
+        { "id": "contractor-onboarding", "name": "Contractor onboarding", "preset": "onboarding-checklist", "flow": "notify", "sensitive": true },
+        { "id": "manager-transition", "name": "New manager transition", "preset": "onboarding-checklist", "flow": "reminder", "sensitive": true },
+        { "id": "employee-transfer", "name": "Employee transfer checklist", "preset": "onboarding-checklist", "flow": "notify", "sensitive": true },
+        { "id": "employee-offboarding", "name": "Employee offboarding checklist", "preset": "onboarding-checklist", "flow": "routing", "sensitive": true },
+        { "id": "policy-acknowledgement-campaign", "name": "Policy acknowledgement campaign", "preset": "policy-acknowledgement", "flow": "reminder", "sensitive": true },
+        { "id": "mandatory-training", "name": "Mandatory training assignment", "preset": "training-tracker", "flow": "reminder", "sensitive": true },
+        { "id": "certification-renewal", "name": "Certification renewal tracker", "preset": "training-tracker", "flow": "reminder", "sensitive": true },
+        { "id": "mentor-match", "name": "Mentor and skills directory", "preset": "skills-directory", "flow": "none" },
+        { "id": "employee-profile", "name": "Employee skills profile", "preset": "skills-directory", "flow": "none", "sensitive": true }
+      ]
+    },
+    {
+      "id": "it-support",
+      "name": "IT and service support",
+      "useCases": [
+        { "id": "it-help-desk", "name": "IT help desk", "preset": "service-desk", "flow": "routing" },
+        { "id": "access-request", "name": "System access request", "preset": "service-desk", "flow": "approval", "sensitive": true },
+        { "id": "hardware-repair", "name": "Hardware repair request", "preset": "maintenance-work-order", "flow": "routing" },
+        { "id": "service-outage", "name": "Service outage report", "preset": "issue-reporting", "flow": "notify" },
+        { "id": "security-incident", "name": "Security incident intake", "preset": "issue-reporting", "flow": "routing", "sensitive": true },
+        { "id": "account-provisioning", "name": "Account provisioning request", "preset": "service-desk", "flow": "approval", "sensitive": true },
+        { "id": "permission-change", "name": "Permission change request", "preset": "service-desk", "flow": "approval", "sensitive": true },
+        { "id": "license-assignment", "name": "Software license assignment", "preset": "inventory", "flow": "low-stock" },
+        { "id": "it-change-request", "name": "IT change request", "preset": "service-desk", "flow": "approval" },
+        { "id": "application-support", "name": "Business application support queue", "preset": "service-desk", "flow": "routing" }
+      ]
+    },
+    {
+      "id": "operations",
+      "name": "Operations, inspections, and quality",
+      "useCases": [
+        { "id": "vehicle-inspection", "name": "Vehicle inspection", "preset": "inspection", "flow": "routing" },
+        { "id": "workplace-safety-report", "name": "Workplace safety report", "preset": "issue-reporting", "flow": "routing", "sensitive": true },
+        { "id": "quality-inspection", "name": "Product quality inspection", "preset": "inspection", "flow": "notify" },
+        { "id": "facility-inspection", "name": "Facility inspection", "preset": "inspection", "flow": "routing" },
+        { "id": "corrective-action", "name": "Corrective action tracker", "preset": "maintenance-work-order", "flow": "reminder" },
+        { "id": "store-opening-checklist", "name": "Store opening checklist", "preset": "inspection", "flow": "none" },
+        { "id": "shift-handover", "name": "Shift handover log", "preset": "meeting-actions", "flow": "digest" },
+        { "id": "site-visit-report", "name": "Site visit report", "preset": "visitor-log", "flow": "notify" },
+        { "id": "equipment-maintenance", "name": "Equipment maintenance work order", "preset": "maintenance-work-order", "flow": "routing" },
+        { "id": "service-level-review", "name": "Service level follow-up", "preset": "service-desk", "flow": "digest" }
+      ]
+    },
+    {
+      "id": "assets-facilities",
+      "name": "Assets, inventory, and facilities",
+      "useCases": [
+        { "id": "asset-register", "name": "Asset register", "preset": "asset-register", "flow": "none" },
+        { "id": "equipment-checkout", "name": "Equipment checkout", "preset": "asset-register", "flow": "notify" },
+        { "id": "fleet-register", "name": "Vehicle fleet register", "preset": "asset-register", "flow": "reminder" },
+        { "id": "warranty-tracker", "name": "Warranty expiry tracker", "preset": "asset-register", "flow": "reminder" },
+        { "id": "stock-register", "name": "Stock register", "preset": "inventory", "flow": "low-stock" },
+        { "id": "reorder-workflow", "name": "Low-stock reorder", "preset": "inventory", "flow": "low-stock" },
+        { "id": "room-booking-requests", "name": "Room booking requests", "preset": "meeting-actions", "flow": "notify" },
+        { "id": "visitor-registration", "name": "Visitor registration", "preset": "visitor-log", "flow": "notify", "sensitive": true },
+        { "id": "key-card-checkout", "name": "Key or access card checkout", "preset": "asset-register", "flow": "notify", "sensitive": true },
+        { "id": "facilities-service-request", "name": "Facilities service request", "preset": "maintenance-work-order", "flow": "routing" }
+      ]
+    },
+    {
+      "id": "projects-meetings",
+      "name": "Projects, meetings, and planning",
+      "useCases": [
+        { "id": "project-tracker", "name": "Project tracker", "preset": "project-tracker", "flow": "digest" },
+        { "id": "milestone-tracker", "name": "Milestone tracker", "preset": "project-tracker", "flow": "reminder" },
+        { "id": "project-issue-log", "name": "Project issue log", "preset": "issue-reporting", "flow": "routing" },
+        { "id": "project-risk-register", "name": "Project risk register", "preset": "risk-register", "flow": "digest" },
+        { "id": "meeting-actions", "name": "Meeting action log", "preset": "meeting-actions", "flow": "reminder" },
+        { "id": "decision-register", "name": "Decision register", "preset": "meeting-actions", "flow": "notify" },
+        { "id": "project-status-report", "name": "Project status reporting", "preset": "project-tracker", "flow": "digest" },
+        { "id": "dependency-tracker", "name": "Project dependency tracker", "preset": "project-tracker", "flow": "reminder" },
+        { "id": "launch-checklist", "name": "Product or service launch checklist", "preset": "onboarding-checklist", "flow": "reminder" },
+        { "id": "portfolio-intake", "name": "Project portfolio intake", "preset": "purchase-request", "flow": "approval" }
+      ]
+    },
+    {
+      "id": "communications-events",
+      "name": "Communications, events, and ideas",
+      "useCases": [
+        { "id": "company-bulletin", "name": "Company bulletin board", "preset": "bulletin-board", "flow": "notify" },
+        { "id": "event-planning", "name": "Event planning calendar", "preset": "event-calendar", "flow": "reminder" },
+        { "id": "editorial-calendar", "name": "Editorial calendar", "preset": "event-calendar", "flow": "approval" },
+        { "id": "campaign-tracker", "name": "Internal campaign tracker", "preset": "event-calendar", "flow": "digest" },
+        { "id": "employee-idea-portal", "name": "Employee idea portal", "preset": "employee-ideas", "flow": "notify" },
+        { "id": "topic-qa", "name": "Topic Q&A board", "preset": "topic-qa", "flow": "notify" },
+        { "id": "news-approval", "name": "Internal news approval", "preset": "bulletin-board", "flow": "approval" },
+        { "id": "event-registration", "name": "Event registration tracker", "preset": "event-calendar", "flow": "notify", "sensitive": true },
+        { "id": "volunteer-signup", "name": "Volunteer signup", "preset": "event-calendar", "flow": "notify", "sensitive": true },
+        { "id": "communications-request", "name": "Communications request queue", "preset": "service-desk", "flow": "routing" }
+      ]
+    },
+    {
+      "id": "documents-knowledge",
+      "name": "Documents and knowledge",
+      "useCases": [
+        { "id": "document-approval", "name": "Document approval", "preset": "document-review", "flow": "file-approval" },
+        { "id": "contract-review", "name": "Contract review tracker", "preset": "document-review", "flow": "file-approval", "sensitive": true },
+        { "id": "policy-review", "name": "Policy review cycle", "preset": "document-review", "flow": "reminder" },
+        { "id": "sop-review", "name": "Standard operating procedure review", "preset": "document-review", "flow": "reminder" },
+        { "id": "document-expiry", "name": "Document expiry tracker", "preset": "document-review", "flow": "reminder" },
+        { "id": "invoice-intake", "name": "Invoice intake and routing", "preset": "purchase-request", "flow": "file-process", "sensitive": true },
+        { "id": "document-template-request", "name": "Document template request", "preset": "service-desk", "flow": "routing" },
+        { "id": "metadata-completion", "name": "Document metadata completion queue", "preset": "document-review", "flow": "file-process" },
+        { "id": "knowledge-article-review", "name": "Knowledge article review", "preset": "document-review", "flow": "approval" },
+        { "id": "records-review", "name": "Records review checklist", "preset": "document-review", "flow": "reminder", "sensitive": true }
+      ]
+    },
+    {
+      "id": "finance-compliance",
+      "name": "Finance and compliance",
+      "useCases": [
+        { "id": "expense-claim", "name": "Expense claim", "preset": "expense-claim", "flow": "approval", "sensitive": true },
+        { "id": "invoice-approval", "name": "Invoice approval", "preset": "purchase-request", "flow": "file-approval", "sensitive": true },
+        { "id": "budget-tracker", "name": "Budget tracker", "preset": "purchase-request", "flow": "digest", "sensitive": true },
+        { "id": "vendor-onboarding", "name": "Vendor onboarding", "preset": "onboarding-checklist", "flow": "approval", "sensitive": true },
+        { "id": "compliance-attestation", "name": "Compliance attestation", "preset": "policy-acknowledgement", "flow": "reminder", "sensitive": true },
+        { "id": "audit-evidence", "name": "Audit evidence tracker", "preset": "document-review", "flow": "reminder", "sensitive": true },
+        { "id": "policy-exception", "name": "Policy exception request", "preset": "risk-register", "flow": "approval", "sensitive": true },
+        { "id": "compliance-training", "name": "Compliance training completion", "preset": "training-tracker", "flow": "reminder", "sensitive": true },
+        { "id": "grant-request", "name": "Grant or funding request", "preset": "purchase-request", "flow": "approval", "sensitive": true },
+        { "id": "purchase-order-tracker", "name": "Purchase order tracker", "preset": "purchase-request", "flow": "sync", "sensitive": true }
+      ]
+    },
+    {
+      "id": "customers-partners",
+      "name": "Customers, vendors, and partners",
+      "useCases": [
+        { "id": "customer-feedback", "name": "Customer feedback intake", "preset": "issue-reporting", "flow": "routing", "sensitive": true },
+        { "id": "customer-support-queue", "name": "Customer support queue", "preset": "service-desk", "flow": "routing", "sensitive": true },
+        { "id": "warranty-claim", "name": "Product warranty claim", "preset": "maintenance-work-order", "flow": "routing", "sensitive": true },
+        { "id": "partner-onboarding", "name": "Partner onboarding", "preset": "onboarding-checklist", "flow": "approval", "sensitive": true },
+        { "id": "supplier-assessment", "name": "Supplier assessment", "preset": "risk-register", "flow": "approval", "sensitive": true },
+        { "id": "delivery-issue", "name": "Delivery issue report", "preset": "issue-reporting", "flow": "notify" },
+        { "id": "customer-visit", "name": "Customer visit log", "preset": "visitor-log", "flow": "notify", "sensitive": true },
+        { "id": "service-change-request", "name": "Customer service change request", "preset": "service-desk", "flow": "approval", "sensitive": true },
+        { "id": "product-quality-claim", "name": "Product quality claim", "preset": "issue-reporting", "flow": "routing" },
+        { "id": "vendor-document-review", "name": "Vendor document review", "preset": "document-review", "flow": "file-approval", "sensitive": true }
+      ]
+    }
+  ]
+}

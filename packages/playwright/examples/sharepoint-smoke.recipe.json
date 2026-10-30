@@ -1,0 +1,9 @@
+{
+  "name": "SharePoint page is available to the signed-in user",
+  "steps": [
+    { "action": "navigate", "path": "/sites/your-site" },
+    { "action": "assertPageReady" },
+    { "action": "assertAuthenticated" },
+    { "action": "screenshot", "name": "sharepoint-page", "fullPage": true }
+  ]
+}
