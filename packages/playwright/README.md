@@ -35,12 +35,14 @@ Review selectors and add business assertions; Codegen records actions only.
 
 ## Generate a test mechanically from a small recipe
 
-Edit `examples/sharepoint-smoke.recipe.json` for the target site, then:
+Edit the scaffolded `tests/e2e/sharepoint-smoke.recipe.json` for the target site, then:
 
 ```sh
-npx spfx-fast-playwright validate examples/sharepoint-smoke.recipe.json
-npx spfx-fast-playwright generate examples/sharepoint-smoke.recipe.json --out tests/e2e/sharepoint-smoke.spec.mjs
+npx spfx-fast-playwright validate tests/e2e/sharepoint-smoke.recipe.json
+npx spfx-fast-playwright generate tests/e2e/sharepoint-smoke.recipe.json --out tests/e2e/sharepoint-smoke.spec.mjs --force
 ```
+
+`init` already creates a spec at that output path; `--force` regenerates it from the edited recipe.
 
 The output is a normal Playwright Test spec. Run it with the project's `SPFX_BASE_URL` and `storageState`:
 
@@ -55,7 +57,7 @@ Keep state files out of source control. They contain impersonation-capable sessi
 This path is useful when a team already has a signed-in Playwright profile and does not want to export its storage state:
 
 ```sh
-npx spfx-fast-playwright run examples/sharepoint-smoke.recipe.json \
+npx spfx-fast-playwright run tests/e2e/sharepoint-smoke.recipe.json \
   --base-url "$SPFX_BASE_URL" \
   --profile-dir "$SPFX_TEST_PROFILE" \
   --artifacts test-results/sharepoint-smoke
@@ -91,10 +93,12 @@ For a known browser confirmation, a click can set `"confirm": true`. The runner 
 
 ### Validate one Graph list CRUD operation
 
-The [tenant CRUD recipe](examples/tenant-crud-validation.recipe.json) clicks the dashboard's **Test list CRUD** button, accepts its explicit warning, and requires the create/read/update/read/delete success message. Replace the site and page path, configure a test list in the web part, and run it with a dedicated signed-in test profile:
+The [tenant CRUD recipe](examples/tenant-crud-validation.recipe.json) clicks the dashboard's **Test list CRUD** button, accepts its explicit warning, and requires the create/read/update/read/delete success message. Copy it from the installed package into the project, then replace the site and page path and configure a test list in the web part:
 
 ```sh
-npx spfx-fast-playwright run examples/tenant-crud-validation.recipe.json \
+cp node_modules/@spfx-fast/playwright/examples/tenant-crud-validation.recipe.json tests/e2e/tenant-crud-validation.recipe.json
+npx spfx-fast-playwright validate tests/e2e/tenant-crud-validation.recipe.json
+npx spfx-fast-playwright run tests/e2e/tenant-crud-validation.recipe.json \
   --base-url "$SPFX_BASE_URL" \
   --profile-dir "$SPFX_TEST_PROFILE" \
   --artifacts test-results/tenant-crud

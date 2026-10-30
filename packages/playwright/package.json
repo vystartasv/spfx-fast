@@ -1,6 +1,6 @@
 {
   "name": "@spfx-fast/playwright",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Vilius Vystartas",
   "description": "Authenticated, recipe-driven Playwright testing helpers for any SharePoint Framework project.",
   "license": "MIT",

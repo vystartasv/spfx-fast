@@ -8,7 +8,7 @@ import { parseArgs } from "node:util";
 import { generateTestSource, runRecipe, validateBaseUrl, validateRecipe } from "../src/index.js";
 import { acquireProfileLock } from "../src/profile-lock.js";
 
-const help = `SPFx Fast Playwright\n\nCommands:\n  init [--force]                            Scaffold config and a smoke recipe\n  validate <recipe.json>                    Validate a recipe\n  generate <recipe.json> --out <test.spec.mjs>  Generate a native Playwright test\n  run <recipe.json> --base-url <url> --profile-dir <dir> [--artifacts <dir>] [--fast] [--headed]\n  record --url <url> --profile-dir <dir> --out <test.spec.ts>  Start Playwright Codegen\n\nRuns are headless by default. --fast skips success screenshots and traces; do one full run after fixes.\n`;
+const help = `SPFx Fast Playwright\n\nCommands:\n  init [--force]                            Scaffold config and a smoke recipe\n  validate <recipe.json>                    Validate a recipe\n  generate <recipe.json> --out <test.spec.mjs> [--force]  Generate a native Playwright test\n  run <recipe.json> --base-url <url> --profile-dir <dir> [--artifacts <dir>] [--fast] [--headed]\n  record --url <url> --profile-dir <dir> --out <test.spec.ts>  Start Playwright Codegen\n\nRuns are headless by default. --fast skips success screenshots and traces; do one full run after fixes.\n`;
 
 const parsed = parseArgs({
   args: process.argv.slice(2),
