@@ -87,7 +87,7 @@ Recipes are plain JSON so agents can generate them without writing browser plumb
 | `assertValue` | Check an input value |
 | `screenshot` | Save a named PNG to the local artifact directory |
 
-Prefer role/label locators. Recipes do not allow raw JavaScript or arbitrary URLs.
+Prefer `testId` locators for stable targeting when the app exposes `data-testid`. Use role/label locators when the test is checking accessible interaction, especially for form controls. Use `assertText` to verify user-visible content on the selected element; use a text locator only when the text itself is the only useful target. Recipes do not allow raw JavaScript or arbitrary URLs.
 
 For a known browser confirmation, a click can set `"confirm": true`. The runner accepts only a JavaScript `confirm` dialog and fails if no confirmation appears or a different dialog type appears. Use this only for an explicitly approved test action; it does not bypass the confirmation shown to the user.
 
@@ -121,4 +121,4 @@ For a full workflow with profile, SharePoint page, image, and OCR guidance, read
 
 ## Package status
 
-This is the early `0.1.0` companion package. It is framework-agnostic across SPFx projects and ships independently from `@spfx-fast/core`.
+This is the `0.1.1` companion package. It is framework-agnostic across SPFx projects and ships independently from `@spfx-fast/core`.

@@ -153,7 +153,7 @@ test("recipe runner drives a local SPFx-like page and captures a reviewable scre
     response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
     response.end(`<!doctype html><html lang="en"><title>Test dashboard</title><body>
       <main><h1>Requests</h1><label>Request title<input aria-label="Request title"></label>
-      <button>Save request</button><p role="status" hidden></p></main>
+      <button>Save request</button><p data-testid="request-save-status" role="status" hidden></p></main>
       <script>document.querySelector('button').addEventListener('click', () => {
         const status = document.querySelector('[role=status]'); status.hidden = false;
         status.textContent = 'Saved: ' + document.querySelector('input').value;
@@ -175,7 +175,7 @@ test("recipe runner drives a local SPFx-like page and captures a reviewable scre
         { action: "assertVisible", locator: { role: "heading", name: "Requests" } },
         { action: "fill", locator: { label: "Request title" }, value: "Laptop request" },
         { action: "click", locator: { role: "button", name: "Save request" } },
-        { action: "assertText", locator: { text: "Saved: Laptop request", exact: true }, expected: "Saved: Laptop request", exact: true },
+        { action: "assertText", locator: { testId: "request-save-status" }, expected: "Saved: Laptop request", exact: true },
         { action: "screenshot", name: "request-saved" },
       ],
     }, { baseUrl, screenshotDir: artifacts });
@@ -207,14 +207,14 @@ test("recipe runner accepts only an explicitly requested browser confirmation", 
   try {
     await page.route("http://127.0.0.1:3000/**", (route) => route.fulfill({
       contentType: "text/html",
-      body: `<button onclick="if (confirm('Create test record?')) document.querySelector('[role=status]').textContent='Record created'">Create test record</button><button>No confirmation</button><p role="status"></p>`,
+      body: `<button data-testid="create-test-record" onclick="if (confirm('Create test record?')) document.querySelector('[data-testid=record-created-status]').textContent='Record created'">Create test record</button><button>No confirmation</button><p data-testid="record-created-status" role="status"></p>`,
     }));
     const result = await runRecipe(page, {
       name: "Confirmed test write",
       steps: [
         { action: "navigate", path: "/fixture" },
-        { action: "click", locator: { role: "button", name: "Create test record" }, confirm: true },
-        { action: "assertText", locator: { text: "Record created" }, expected: "Record created", exact: true },
+        { action: "click", locator: { testId: "create-test-record" }, confirm: true },
+        { action: "assertText", locator: { testId: "record-created-status" }, expected: "Record created", exact: true },
       ],
     }, { baseUrl: "http://127.0.0.1:3000" });
     assert.equal(result.steps, 3);

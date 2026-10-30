@@ -111,8 +111,10 @@ try {
   await tenantPage.getByRole("button", { name: "Test drive delta (one page)" }).click();
   await tenantPage.getByText("Read one page (2 item(s)); checkpoint saved. Run again to continue.").waitFor();
   assert.equal(await tenantPage.evaluate(() => window.__spfxFastDeltaMaxPages), 1, "tenant delta probe must stay bounded to one page");
-  await tenantPage.getByRole("button", { name: "Test list CRUD" }).click();
-  await tenantPage.getByText("Create, read, update, read, and delete succeeded for one temporary list item.").waitFor();
+  await tenantPage.getByTestId("tenant-validation-run-list-crud").click();
+  const crudResult = tenantPage.getByTestId("tenant-validation-list-crud-result");
+  await crudResult.waitFor({ state: "visible" });
+  assert.match(await crudResult.innerText(), /Create, read, update, read, and delete succeeded for one temporary list item\./);
   await tenantPage.getByRole("button", { name: "Test 10 MiB upload and download" }).click();
   await tenantPage.getByText("Graph resumable upload and fresh binary download succeeded for 10 MiB + 1 byte; content matched. Temporary file deleted.").waitFor();
   assert.equal(await tenantPage.evaluate(() => window.__spfxFastTenantDeletes), 2, "CRUD and file checks clean up their temporary records");

@@ -4,8 +4,8 @@
     { "action": "navigate", "path": "/sites/your-site/SitePages/tenant-validation.aspx" },
     { "action": "assertPageReady" },
     { "action": "assertAuthenticated" },
-    { "action": "assertVisible", "locator": { "role": "button", "name": "Test list CRUD" } },
-    { "action": "click", "locator": { "role": "button", "name": "Test list CRUD" }, "confirm": true },
-    { "action": "assertText", "locator": { "text": "Create, read, update, read, and delete succeeded for one temporary list item." }, "expected": "Create, read, update, read, and delete succeeded for one temporary list item.", "exact": false }
+    { "action": "assertVisible", "locator": { "testId": "tenant-validation-run-list-crud" } },
+    { "action": "click", "locator": { "testId": "tenant-validation-run-list-crud" }, "confirm": true },
+    { "action": "assertText", "locator": { "testId": "tenant-validation-list-crud-result" }, "expected": "Create, read, update, read, and delete succeeded for one temporary list item.", "exact": false }
   ]
 }

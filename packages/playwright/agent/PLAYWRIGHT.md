@@ -13,7 +13,7 @@ For any SPFx project. This dev tool does not require `@spfx-fast/core`.
 
 - Record with `spfx-fast-playwright record`; review selectors and add user-visible assertions.
 - For repeatable checks, validate a JSON recipe, then `generate` or `run` it.
-- Prefer role/label locators and explicit waits. Do not use generic `networkidle` on SharePoint.
+- Prefer `testId` locators for stable targeting when the app exposes `data-testid`. Use role/label locators when checking accessible interaction, especially for form controls. Use `assertText` to verify user-visible content on the selected element; use text locators only when the text itself is the only useful target. Always use explicit waits; do not use generic `networkidle` on SharePoint.
 - Use `run --fast` during fixes, then run once without it.
 - `assertAuthenticated` checks REST without reading account details.
 - A click may set `confirm: true` to accept exactly one expected JavaScript confirmation; it fails if the dialog is missing or has another type.
