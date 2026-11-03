@@ -21,6 +21,10 @@ node scripts/sharepoint-app-lifecycle.mjs install \
   --site "$SPFX_TEST_SITE" \
   --config examples/fixtures/spfx-fast-dashboard/config/package-solution.json \
   --profile-dir "$SPFX_TEST_PROFILE"
+node scripts/sharepoint-app-lifecycle.mjs verify \
+  --page "$SPFX_TEST_PAGE" \
+  --bundle "<hashed-js-filename-from-release-manifest>" \
+  --profile-dir "$SPFX_TEST_PROFILE"
 ```
 
 The profile must be signed in. The script uses the in-page SharePoint session, locks the profile, and never copies auth data. Run one job per profile.
@@ -35,9 +39,10 @@ Use the supplied site path for REST, e.g. `/sites/team/_api`; `/_api` targets th
 - For web part tests, choose **Only enable this app** and install on the test site. Copilot UX instead requires **Enable this app and add it to all sites**, then **Add to Teams** to sync its agent. This does not install a Teams tab.
 - Approve only the exact Graph scopes requested by this package. Do not approve other pending packages.
 - Catalog row `ID`, package `ProductId`, and component ID differ. Use the catalog row for ALM and component ID for the page.
-- A `200` is not proof. Read target `AvailableApps` and verify `InstalledVersion === AppCatalogVersion`. `GetAppInstanceById` falsely reported a known Site Contents app as uninstalled.
+- A `200` is not proof. Read target `AvailableApps` and verify `InstalledVersion === AppCatalogVersion`. `GetAppInstanceById` falsely reported a known Site Contents app as uninstalled. For runtime proof, use `verify` with the exact hashed JS filename from the web part's release manifest. SharePoint's installed-version metadata can lag behind the asset actually served, so report the catalog state and page asset state separately.
 - After upgrades, verify the published page loads the current `ClientSideAssets` bundle; matching versions can still serve stale assets. Increment `solution.version` before rebuilding, or SharePoint may keep serving the old bundle.
 - If install reports an existing instance but read-back cannot find it, stop and inspect Site Contents before retrying.
+- If the site instance remains `Initialized` (status 9) after the catalog-level install/reinstall call, do not repeat that lifecycle request. A single guarded retry through `AppInstance.Install()` is available as `node scripts/retry-sharepoint-app-instance-install.mjs <site-url> <signed-in-profile-dir> [product-id]`; it runs only when exactly one instance is status 9 and verifies the transition to Installed (status 5). If it remains at status 9, stop and report the returned job ID, app-instance detail, catalog version, and page bundle separately. A successful HTTP response only means SharePoint accepted the job.
 
 ## Add a test page and verify
 

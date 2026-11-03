@@ -16,6 +16,7 @@ Help agents build useful SharePoint Framework apps quickly, with a reactive loca
 - C8: Cached file content is scoped to the signed-in tenant/user cache, expires after 5 minutes, and is persisted only when it is at most 1 MB by default. Markdown is untrusted document data.
 - C9: Synthetic and local-browser benchmarks do not prove signed-in tenant performance.
 - C10: Copilot UX is generally available from SPFx 1.24.0. It requires a Microsoft 365 Copilot add-on license, supports browser/desktop Copilot clients, and is not supported on mobile at GA; verify current tenant/client requirements before deployment.
+- C11: Learning drafts stay local and are never uploaded automatically. Validation catches common identifiers but cannot guarantee anonymity or inspect attached evidence; review all content before sharing.
 
 ## I. Interfaces
 
@@ -25,6 +26,7 @@ Help agents build useful SharePoint Framework apps quickly, with a reactive loca
 - `I4`: Agent capability catalog, starter instructions, templates, CLI, and host-neutral tool descriptors; hosts register and expose tools.
 - `I5`: SharePoint REST, Microsoft Graph, and explicitly scoped legacy CAML/CSOM-oriented adapters.
 - `I6`: CLI commands for agent setup/diagnostics and Fluent UI React v9 app/dashboard scaffolding.
+- `I7`: Playwright CLI commands for authenticated UI recipes, learning draft capture, and local privacy validation.
 
 ## T. User stories and acceptance tasks
 
@@ -47,3 +49,4 @@ Help agents build useful SharePoint Framework apps quickly, with a reactive loca
 | T15 | implemented | As an SPFx developer, I can build separate Fluent UI v9 web-part and Copilot UX fixtures against SPFx 1.24.0 using `createSPFxServices`; the web-part fixture pages a document library and renders sanitized Markdown previews, and the Copilot fixture reads a bounded list through the signed-in user. Dashboard package 1.0.0.60 passed Graph `rename` recovery after a lost final response. Package 1.0.0.56 passed existing-file replacement recovery after a lost final response. Earlier versions passed private-image and post-window upload checks. Earlier checks cover CRUD, Person/Lookup writes, and paged list/drive delta. Copilot runtime validation is excluded as requested. | Host validation and examples |
 | T16 | implemented | As an SPFx developer, I can manage a list item's attachments through the authenticated SharePoint REST panel and compose it with create/edit forms using the optional `ItemForm.attachments` slot. | SharePoint REST examples |
 | T17 | implemented | As an SPFx developer, I can see cache-first drive inventory and resumable delta status, file-type distribution, latest-modified items, and open/download/continue-sync actions. Latest-modified ordering is not presented as delta event history. | Files and interactive surfaces |
+| T18 | implemented | As an SPFx developer, I can capture a SharePoint UI discovery and runnable recipe in a local structured draft, validate its applicability and evidence level, and check common identifiers before manually promoting the learning. | Playwright learning |

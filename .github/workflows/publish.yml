@@ -34,7 +34,7 @@ jobs:
       - if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install chromium
       - name: Verify release tag
-        run: node -e 'const ref = process.env.GITHUB_REF_NAME; const versions = [require("./package.json").version, require("./packages/playwright/package.json").version]; if (!versions.some(version => ref === `v${version}`)) process.exit(1)'
+        run: node -e 'const ref = process.env.GITHUB_REF_NAME; const versions = [require("./package.json").version, require("./packages/playwright/package.json").version, require("./packages/knowledge/package.json").version]; if (!versions.some(version => ref === `v${version}`)) process.exit(1)'
       - run: pnpm test
       - name: Pack and validate package
         run: pnpm test:package
@@ -42,6 +42,8 @@ jobs:
           SPFX_FAST_PACKAGE_ARCHIVE: ${{ runner.temp }}/spfx-fast-core-release.tgz
       - name: Pack Playwright package
         run: npm pack ./packages/playwright --pack-destination "$RUNNER_TEMP"
+      - name: Pack Knowledge package
+        run: npm pack ./packages/knowledge --pack-destination "$RUNNER_TEMP"
       - name: Install npm trusted-publishing client
         run: npm install --global npm@11.5.1
       - name: Publish new package versions
@@ -49,6 +51,7 @@ jobs:
         run: |
           core_version="$(node -p "require('./package.json').version")"
           playwright_version="$(node -p "require('./packages/playwright/package.json').version")"
+          knowledge_version="$(node -p "require('./packages/knowledge/package.json').version")"
 
           if npm view "@spfx-fast/core@$core_version" version >/dev/null 2>&1; then
             echo "@spfx-fast/core@$core_version is already published; skipping"
@@ -60,4 +63,10 @@ jobs:
             echo "@spfx-fast/playwright@$playwright_version is already published; skipping"
           else
             npm publish "$RUNNER_TEMP/spfx-fast-playwright-$playwright_version.tgz" --access public
+          fi
+
+          if npm view "@spfx-fast/knowledge@$knowledge_version" version >/dev/null 2>&1; then
+            echo "@spfx-fast/knowledge@$knowledge_version is already published; skipping"
+          else
+            npm publish "$RUNNER_TEMP/spfx-fast-knowledge-$knowledge_version.tgz" --access public
           fi

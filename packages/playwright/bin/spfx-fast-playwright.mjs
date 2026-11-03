@@ -6,9 +6,10 @@ import { createRequire } from "node:module";
 import { pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
 import { generateTestSource, runRecipe, validateBaseUrl, validateRecipe } from "../src/index.js";
+import { createLearningDraft, validateLearning } from "../src/learning.js";
 import { acquireProfileLock } from "../src/profile-lock.js";
 
-const help = `SPFx Fast Playwright\n\nCommands:\n  init [--force]                            Scaffold config and a smoke recipe\n  validate <recipe.json>                    Validate a recipe\n  generate <recipe.json> --out <test.spec.mjs> [--force]  Generate a native Playwright test\n  run <recipe.json> --base-url <url> --profile-dir <dir> [--artifacts <dir>] [--fast] [--headed]\n  record --url <url> --profile-dir <dir> --out <test.spec.ts>  Start Playwright Codegen\n\nRuns are headless by default. --fast skips success screenshots and traces; do one full run after fixes.\n`;
+const help = `SPFx Fast Playwright\n\nCommands:\n  init [--force]                            Scaffold config and a smoke recipe\n  validate <recipe.json>                    Validate a recipe\n  generate <recipe.json> --out <test.spec.mjs> [--force]  Generate a native Playwright test\n  learn init [--out <learning.json>]        Create a local, anonymous learning draft\n  learn validate <learning.json>            Validate structure and check for common identifiers\n  run <recipe.json> --base-url <url> --profile-dir <dir> [--artifacts <dir>] [--fast] [--headed]\n  record --url <url> --profile-dir <dir> --out <test.spec.ts>  Start Playwright Codegen\n\nLearning drafts default to test-results/spfx-fast-playwright/ and stay local; no telemetry or upload is performed. Review all evidence manually before sharing.\nRuns are headless by default. --fast skips success screenshots and traces; do one full run after fixes.\n`;
 
 const parsed = parseArgs({
   args: process.argv.slice(2),
@@ -41,6 +42,15 @@ async function readRecipe(file) {
   }
 }
 
+async function readLearning(file) {
+  if (!file) throw new Error("Supply a learning JSON file.");
+  try { return validateLearning(JSON.parse(await readFile(resolve(file), "utf8"))); }
+  catch (error) {
+    if (error instanceof TypeError) throw error;
+    throw new Error("Could not read a valid learning JSON file.");
+  }
+}
+
 async function outputPath(file) {
   if (!file) throw new Error("Supply --out.");
   const target = resolve(file);
@@ -50,6 +60,18 @@ async function outputPath(file) {
   }
   await mkdir(dirname(target), { recursive: true });
   return target;
+}
+
+async function ignoreLearningDraft() {
+  const file = resolve(".gitignore");
+  let existing = "";
+  try { existing = await readFile(file, "utf8"); }
+  catch (error) { if (error.code !== "ENOENT") throw error; }
+  const entry = "/test-results/spfx-fast-playwright/learning-draft.json";
+  const ignored = existing.split(/\r?\n/);
+  if (ignored.includes(entry) || ignored.includes("/test-results/") || ignored.includes("test-results/")) return false;
+  await writeFile(file, `${existing}${existing && !existing.endsWith("\n") ? "\n" : ""}${entry}\n`, "utf8");
+  return true;
 }
 
 async function requireProfileDirectory(value) {
@@ -113,6 +135,26 @@ async function main() {
     const recipe = await readRecipe(recipeFile);
     console.log(`Recipe valid: ${recipe.name} (${recipe.steps.length} steps).`);
     return;
+  }
+  if (command === "learn") {
+    const action = recipeFile;
+    const file = parsed.positionals[2];
+    if (action === "init") {
+      const isDefault = !options.out && !file;
+      const target = await outputPath(options.out ?? file ?? "test-results/spfx-fast-playwright/learning-draft.json");
+      if (isDefault && await ignoreLearningDraft()) console.log("Added the default draft path to .gitignore.");
+      await writeFile(target, `${JSON.stringify(createLearningDraft(), null, 2)}\n`, "utf8");
+      console.log(`Created local learning draft: ${target}`);
+      console.log("The draft contains no author or tenant fields. Edit it, validate it, then review it manually before sharing.");
+      return;
+    }
+    if (action === "validate") {
+      const learning = await readLearning(file ?? options.out);
+      console.log(`Learning valid: ${learning.title} (${learning.topic}, ${learning.validation.level}).`);
+      console.log("No upload occurred. Validation catches common identifiers; it cannot prove a draft is anonymous. Review every value and attached artifact.");
+      return;
+    }
+    throw new Error("Usage: spfx-fast-playwright learn <init [--out <file>] | validate <file>>");
   }
   if (command === "generate") {
     const recipe = await readRecipe(recipeFile);

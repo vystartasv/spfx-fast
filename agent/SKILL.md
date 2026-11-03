@@ -9,6 +9,8 @@ Use the installed library before writing Graph/REST plumbing. Install it with th
 
 Tenant-validation commands under `node scripts/...` require a source checkout; they are not included in the npm package.
 
+For reusable SharePoint UI discoveries, use `@spfx-fast/playwright`'s local `learn init` and `learn validate` commands. Review the result and evidence manually before sharing; see the [learning index](../docs/LEARNINGS.md). Never include tenant or user data in a promoted artifact.
+
 ## Build a dashboard
 
 1. Inspect the signed-in site, list, columns, internal names, and choices. Never guess IDs, URLs, fields, or permissions.

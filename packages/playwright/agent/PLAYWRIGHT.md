@@ -29,4 +29,5 @@ For any SPFx project. This dev tool does not require `@spfx-fast/core`.
 - Screenshots show appearance only. Assert API or saved/published state separately.
 - After three failed attempts to reach a control, stop and report the blocker with evidence.
 - Check artifacts for tenant/personal data before sharing.
+- When a task reveals a reusable UI behavior, capture it with `learn init`, validate it with `learn validate`, and recommend a recipe or guide change. Drafts stay local; validation catches common identifiers but cannot guarantee anonymity. Never attach screenshots, traces, profiles, or tenant data to a shared learning.
 - For image overviews, OCR, PDF text, and screenshot diagnostics, see [the browser, image, and OCR workflow](../../../docs/AGENT-BROWSER-WORKFLOW.md). OCR does not prove visual layout or complete text capture.

@@ -52,6 +52,22 @@ SPFX_BASE_URL="https://tenant.sharepoint.com/sites/your-site" npx playwright tes
 
 Keep state files out of source control. They contain impersonation-capable session data. Use a dedicated least-privilege account and test site.
 
+## Capture and contribute a SharePoint UI discovery
+
+Capture a reusable finding and runnable recipe as a local draft:
+
+```sh
+npx spfx-fast-playwright learn init
+# Edit test-results/spfx-fast-playwright/learning-draft.json.
+npx spfx-fast-playwright learn validate test-results/spfx-fast-playwright/learning-draft.json
+```
+
+The default stays with Playwright artifacts under `test-results/`; `learn init` adds that file to `.gitignore` when the directory is not already ignored. The strict format has no author or tenant fields. Validation rejects common emails, GUIDs, tenant domains, site-specific paths, and credential-like strings; it does not upload anything. It cannot guarantee anonymity, detect every identifier, or inspect screenshots and other attachments. Keep drafts local until you have reviewed all values and evidence. Never include tenant URLs, IDs, user names, list content, browser profiles, auth state, screenshots, or traces in a shared learning.
+
+Promote verified findings to the smallest durable artifact: a recipe in `examples/`, a pattern in the agent guide, or an API/scenario note in core docs. Record applicability and validation limits; do not present tenant-specific behavior as universal. The [learning index](https://github.com/vystartasv/spfx-fast/blob/main/docs/LEARNINGS.md) points agents to existing guidance.
+
+To contribute the browser discovery through the shared knowledge flow, convert and review the draft with `npx --yes @spfx-fast/knowledge learn import-playwright <draft.json>`, then run `learn validate` and `learn patch`. The converter maps fields mechanically; verify the result before sharing.
+
 ## Run a recipe with a persistent authenticated browser profile
 
 This path is useful when a team already has a signed-in Playwright profile and does not want to export its storage state:
