@@ -1,0 +1,16 @@
+{
+  "name": "@spfx-fast/knowledge",
+  "version": "0.1.1",
+  "description": "SPFx specialist agent skill, SharePoint debugging knowledge, and contribution patch tool.",
+  "license": "MIT",
+  "homepage": "https://github.com/vystartasv/spfx-fast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vystartasv/spfx-fast.git",
+    "directory": "packages/knowledge"
+  },
+  "engines": { "node": ">=18" },
+  "type": "module",
+  "bin": { "spfx-fast-knowledge": "bin/spfx-fast-knowledge.mjs" },
+  "files": ["bin", "skill", "docs", "README.md"]
+}

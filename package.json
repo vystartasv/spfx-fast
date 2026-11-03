@@ -32,7 +32,8 @@
   ],
   "type": "module",
   "workspaces": [
-    "packages/playwright"
+    "packages/playwright",
+    "packages/knowledge"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -3,24 +3,30 @@ name: spfx-fast
 description: 'Build SharePoint Framework apps with SPFx Fast. Use for SharePoint list forms, request trackers, dashboards, and authenticated Graph/REST features in SPFx 1.24+.'
 ---
 
-# Build SharePoint apps with SPFx Fast
+# SPFx specialist skill
 
-Use this skill when a user asks for an SPFx app or feature. SPFx Fast complements PnP and Microsoft clients; keep existing libraries when they already fit.
+Use this skill for SharePoint Framework work: understand the host, package, tenant APIs, and deployment lifecycle before changing code. Keep existing PnP and Microsoft clients when they fit.
 
-## Start
+## Route the task
 
-1. Inspect the repository, SPFx version, signed-in site context, lists, columns, internal names, and permissions. Never guess tenant IDs, fields, URLs, or access.
-2. Install `@spfx-fast/core` with the project's package manager. Read `node_modules/@spfx-fast/core/agent/SKILL.md` and `agent/capabilities.json` before coding.
-3. Choose a starter with `pnpm dlx --package @spfx-fast/core spfx-fast use-cases` or `pnpm dlx --package @spfx-fast/core spfx-fast scenarios`. With npm, use `npx --yes --package=@spfx-fast/core -- spfx-fast`. Generate only after inspecting the target schema:
+1. Inspect the repo's SPFx version, package manager, current dependencies, and existing patterns. Read `@spfx-fast/core`'s `agent/SKILL.md` and `agent/capabilities.json` before using its APIs.
+2. For component selection, Fluent UI and SharePoint UI patterns, route to [`@spfx-fast/sharepoint-ui`](https://github.com/vystartasv/sharepoint-ui)'s skill and catalog. Keep that focused catalog separate from this SPFx workflow.
+3. For authenticated browser debugging, route to [`@spfx-fast/playwright`](../packages/playwright/README.md) and the [debugging playbook](../docs/DEBUGGING.md).
+4. For other concerns, use the narrow reference below; do not load every guide for every task.
+
+## Build workflow
+
+1. Inspect the signed-in site context, lists, columns, internal names, and permissions. Never guess tenant IDs, fields, URLs, or access.
+2. Choose a starter with `pnpm dlx --package @spfx-fast/core spfx-fast use-cases` or `pnpm dlx --package @spfx-fast/core spfx-fast scenarios`. With npm, use `npx --yes --package=@spfx-fast/core -- spfx-fast`. Generate only after inspecting the target schema:
 
    ```sh
    pnpm dlx --package @spfx-fast/core spfx-fast dashboard <Name> --site-id <inspected-site-id> --use-case <id> --list-id <inspected-list-id>
    ```
 
    Replace the pnpm prefix with `npx --yes --package=@spfx-fast/core -- spfx-fast` to use npm.
-4. Run `pnpm dlx --package @spfx-fast/core spfx-fast agent init` and `pnpm dlx --package @spfx-fast/core spfx-fast agent doctor`. Use the same npm prefix above when needed. Doctor checks local setup, not tenant permissions.
-5. Use the SPFx authenticated client from `createSPFxServices(context, SPHttpClient.configurations.v1)`. Do not acquire tokens independently or store credentials.
-6. Preserve permission checks, bounded reads, loading/error states, accessible controls, and confirmation before writes or deletes. Ask an available design skill to polish the starter to the user's taste.
+3. Run `spfx-fast agent init` and `spfx-fast agent doctor` through the same package runner. Doctor checks local setup, not tenant permissions.
+4. Use `createSPFxServices(context, SPHttpClient.configurations.v1)` for authenticated SharePoint calls. Do not acquire tokens independently or store credentials.
+5. Preserve permission checks, bounded reads, loading/error states, accessible controls, and confirmation before writes or deletes.
 
 ## Common requests
 
@@ -33,9 +39,19 @@ Use this skill when a user asks for an SPFx app or feature. SPFx Fast complement
 | Asset register | `asset-register` |
 | Stock reorder tracker | `reorder-workflow` |
 
-## When a helper is missing
+## References by task
 
-Use authenticated raw SharePoint REST or Graph through the supplied services. Check `docs/API-COVERAGE.md` for typed, raw-only, and unsupported coverage. Keep special response parsing local and small. Do not replace authentication, caching, paging, or delta sync with hand-written versions without a concrete need.
+| Task | Read |
+|---|---|
+| Common failures and field-tested gotchas | [Debugging playbook](../../packages/knowledge/docs/DEBUGGING.md) |
+| API, permissions, and limits | [API coverage](../../docs/API-COVERAGE.md) |
+| Deployment and stale bundle diagnosis | [Deployment guide](../../docs/AGENT-SHAREPOINT-DEPLOYMENT.md) |
+| Signed-in browser checks | [Browser workflow](../../docs/AGENT-BROWSER-WORKFLOW.md) |
+| Reusable app patterns | [Examples](../../docs/EXAMPLES.md), [SPFx examples](../../docs/SPFX-EXAMPLES.md) |
+| Scenario and starter selection | [Use cases](../../docs/USE-CASES.md), [scenarios](../../docs/SCENARIOS.md) |
+| Share a reusable finding | [Contribution guide](../../CONTRIBUTING.md#knowledge-contributions) |
+
+When a helper is missing, use authenticated raw REST or Graph through supplied services. Check API coverage first. Keep special response parsing local and small; do not replace authentication, caching, paging, or delta sync without a concrete need.
 
 ## References
 

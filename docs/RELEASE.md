@@ -13,16 +13,15 @@ pnpm test:package
 
 ## Publish from GitHub
 
-`.github/workflows/publish.yml` runs when a GitHub Release is published. It verifies the `vX.Y.Z` tag matches `package.json`, reruns tests, validates the package tarball, then publishes that exact tarball to npm.
+`.github/workflows/publish.yml` runs when a GitHub Release is published. It verifies the tag matches a package version, runs the core checks, packs the core, Playwright, and Knowledge packages, then publishes any versions not already on npm.
 
 Set up npm trusted publishing once:
 
-1. Open `@spfx-fast/core` on [npmjs.com](https://www.npmjs.com/package/@spfx-fast/core) → **Settings** → **Trusted Publisher**.
-2. Choose **GitHub Actions**. Enter owner `vystartasv`, repository `spfx-fast`, workflow `publish.yml`; leave environment blank.
-3. Allow direct `npm publish` for this publisher.
-4. Create a GitHub Release whose tag matches the package version, such as `v0.2.9` for `package.json` version `0.2.9`.
+1. Configure a GitHub Actions **Trusted Publisher** in the settings of each npm package you release: [`@spfx-fast/core`](https://www.npmjs.com/package/@spfx-fast/core), [`@spfx-fast/playwright`](https://www.npmjs.com/package/@spfx-fast/playwright), and [`@spfx-fast/knowledge`](https://www.npmjs.com/package/@spfx-fast/knowledge).
+2. Use owner `vystartasv`, repository `spfx-fast`, workflow filename `publish.yml`, and leave the environment blank. Allow `npm publish`.
+3. Bump the package version, commit and merge it, then publish a GitHub Release with the matching `vX.Y.Z` tag.
 
-The workflow uses GitHub OIDC; it needs no npm token or 2FA code. npm requires CLI 11.5.1+ and Node 22.14+. GitHub-hosted runners and public repositories get provenance automatically. The first trusted publish must succeed within two days of configuring the publisher. See [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/).
+The workflow uses GitHub OIDC; it needs no npm token secret. npm requires CLI 11.5.1+ and Node 22.14+. GitHub-hosted runners and public repositories get provenance automatically. The first trusted publish must succeed within two days of configuring the publisher. See [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/).
 
 Do not publish a GitHub Release until its matching package version is ready. A repeated version cannot be republished.
 

@@ -1,5 +1,6 @@
 packages:
   - packages/playwright
+  - packages/knowledge
 allowBuilds:
   esbuild: true
   unrs-resolver: true
