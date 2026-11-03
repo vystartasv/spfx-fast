@@ -1,6 +1,6 @@
 {
   "name": "@spfx-fast/knowledge",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "SPFx specialist agent skill, SharePoint debugging knowledge, and contribution patch tool.",
   "license": "MIT",
   "homepage": "https://github.com/vystartasv/spfx-fast#readme",
