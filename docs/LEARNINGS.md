@@ -9,7 +9,7 @@ Use the narrowest source that answers the question. Treat tenant validation as e
 | Find an API, permission, or known limit | [API coverage](API-COVERAGE.md) |
 | Copy a working implementation | [Examples](EXAMPLES.md), [SPFx examples](SPFX-EXAMPLES.md) |
 | Check actual tenant behavior | [Tenant validation](TENANT-VALIDATION.md), [browser workflow](AGENT-BROWSER-WORKFLOW.md) |
-| Test SharePoint UI and publish a reusable finding | [`@spfx-fast/playwright`](../packages/playwright/README.md#promote-a-sharepoint-ui-discovery) |
+| Test SharePoint UI and publish a reusable finding | [`@spfx-fast/playwright`](../packages/playwright/README.md#capture-and-contribute-a-sharepoint-ui-discovery) |
 | Draft and submit a reusable knowledge patch | [`@spfx-fast/knowledge`](../packages/knowledge/README.md), [contribution guide](../CONTRIBUTING.md#knowledge-contributions) |
 | Verify deployment and app-catalog lifecycle | [Deployment guide](AGENT-SHAREPOINT-DEPLOYMENT.md) |
 
