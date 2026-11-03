@@ -11,7 +11,7 @@ Use this skill for SharePoint Framework work: understand the host, package, tena
 
 1. Inspect the repo's SPFx version, package manager, current dependencies, and existing patterns. Read `@spfx-fast/core`'s `agent/SKILL.md` and `agent/capabilities.json` before using its APIs.
 2. For component selection, Fluent UI and SharePoint UI patterns, route to [`@spfx-fast/sharepoint-ui`](https://github.com/vystartasv/sharepoint-ui)'s skill and catalog. Keep that focused catalog separate from this SPFx workflow.
-3. For authenticated browser debugging, route to [`@spfx-fast/playwright`](../packages/playwright/README.md) and the [debugging playbook](../docs/DEBUGGING.md).
+3. For authenticated browser debugging, route to [`@spfx-fast/playwright`](https://github.com/vystartasv/spfx-fast/tree/main/packages/playwright) and the [debugging playbook](https://github.com/vystartasv/spfx-fast/blob/main/packages/knowledge/docs/DEBUGGING.md).
 4. For other concerns, use the narrow reference below; do not load every guide for every task.
 
 ## Build workflow
@@ -43,13 +43,13 @@ Use this skill for SharePoint Framework work: understand the host, package, tena
 
 | Task | Read |
 |---|---|
-| Common failures and field-tested gotchas | [Debugging playbook](../../packages/knowledge/docs/DEBUGGING.md) |
+| Common failures and field-tested gotchas | [Debugging playbook](https://github.com/vystartasv/spfx-fast/blob/main/packages/knowledge/docs/DEBUGGING.md) |
 | API, permissions, and limits | [API coverage](../../docs/API-COVERAGE.md) |
 | Deployment and stale bundle diagnosis | [Deployment guide](../../docs/AGENT-SHAREPOINT-DEPLOYMENT.md) |
 | Signed-in browser checks | [Browser workflow](../../docs/AGENT-BROWSER-WORKFLOW.md) |
 | Reusable app patterns | [Examples](../../docs/EXAMPLES.md), [SPFx examples](../../docs/SPFX-EXAMPLES.md) |
 | Scenario and starter selection | [Use cases](../../docs/USE-CASES.md), [scenarios](../../docs/SCENARIOS.md) |
-| Share a reusable finding | [Contribution guide](../../CONTRIBUTING.md#knowledge-contributions) |
+| Share a reusable finding | [Contribution guide](https://github.com/vystartasv/spfx-fast/blob/main/CONTRIBUTING.md#knowledge-contributions) |
 
 When a helper is missing, use authenticated raw REST or Graph through supplied services. Check API coverage first. Keep special response parsing local and small; do not replace authentication, caching, paging, or delta sync without a concrete need.
 
