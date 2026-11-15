@@ -4,6 +4,8 @@ Playwright helpers for any SPFx project. This dev tool stays out of the web-part
 
 It adds agent-friendly recipes, same-origin navigation, and authenticated runs with reviewable evidence. Playwright provides the test runner, locators, recorder, traces, and screenshots.
 
+When [`@spfx-fast/ide`](https://www.npmjs.com/package/@spfx-fast/ide) is installed, `spfx-ide e2e` routes to this package's CLI. The router does not install the optional Playwright peers or browser runtime; follow the install and browser setup below before running E2E.
+
 ## Install in an SPFx project
 
 ```sh
@@ -137,4 +139,4 @@ For a full workflow with profile, SharePoint page, image, and OCR guidance, read
 
 ## Package status
 
-This is the `0.1.1` companion package. It is framework-agnostic across SPFx projects and ships independently from `@spfx-fast/core`.
+This is the `0.1.2` companion package. It is framework-agnostic across SPFx projects and ships independently from `@spfx-fast/core`.

@@ -2,6 +2,8 @@
 
 The shareable SPFx specialist skill and field debugging playbook. This keeps SPFx as one skill, with focused references loaded only when the task needs them. It is independent of the runtime and Playwright packages.
 
+When [`@spfx-fast/ide`](https://www.npmjs.com/package/@spfx-fast/ide) is installed, use `spfx-ide knowledge` to reach this package from the shared SPFx tool router. This package remains the source for specialist SPFx guidance; the IDE routes agents here instead of copying the references. Agent discovery depends on the host agent's skill support and configured skill directories.
+
 ```sh
 npx --yes @spfx-fast/knowledge --help
 npx --yes @spfx-fast/knowledge learn init

@@ -40,6 +40,7 @@ The same scripts work with npm (`npm test`, `npm run test:package`, `npm pack --
 
 ## Recent releases
 
+- **0.2.12:** documents the IDE development-tool route while keeping Core, Knowledge, and Playwright independently installable.
 - **0.2.9:** refreshes the README gallery with current Fluent UI web parts and cache-busted screenshot assets.
 - **0.2.8:** compact mobile-first README gallery with a prominent sample dashboard and expandable screenshots.
 - **0.2.7:** refreshed Fluent UI v9 examples and screenshots, improved floor-plan map and mobile layout.

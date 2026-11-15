@@ -1,6 +1,6 @@
 {
   "name": "@spfx-fast/core",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "author": "Vilius Vystartas",
   "description": "Build cached SPFx apps with authenticated Graph, REST, React hooks, and Fluent UI v9.",
   "homepage": "https://github.com/vystartasv/spfx-fast#readme",
