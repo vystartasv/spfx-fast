@@ -14,22 +14,22 @@ npm install --save-dev @spfx-fast/playwright @playwright/test playwright
 
 SPFx is not a dependency. Production web parts do not import this package by default.
 
-Scaffold a serial Playwright setup with a starter recipe, generated test spec, agent instructions, screenshots, traces, and an ignored auth-state folder:
+Scaffold a serial Playwright setup with a starter recipe, generated test spec, and agent instructions:
 
 ```sh
 npx spfx-fast-playwright init
 ```
 
-The config uses storage state only when `SPFX_STORAGE_STATE` is set. Keep it in an ignored folder; never commit it. The scaffold adds `SPFX-PLAYWRIGHT.md` and links it from `AGENTS.md` without replacing existing instructions.
+The config uses storage state when `SPFX_STORAGE_STATE` is set. Point it at the shared per-tenant file such as `~/.playwright-auth/workswithagents.json`; keep state out of the project and never commit it. The scaffold adds `SPFX-PLAYWRIGHT.md` and links it from `AGENTS.md` without replacing existing instructions.
 
 ## Record a test with the Playwright recorder
 
-Use a dedicated signed-in test profile. The command calls Playwright Codegen and writes an ordinary Playwright spec:
+Reuse the Workbench shared state. The command calls Playwright Codegen and writes an ordinary Playwright spec:
 
 ```sh
 npx spfx-fast-playwright record \
   --url "$SPFX_BASE_URL" \
-  --profile-dir "$SPFX_TEST_PROFILE" \
+  --storage-state "$HOME/.playwright-auth/workswithagents.json" \
   --out tests/e2e/home-page.spec.ts
 ```
 
@@ -49,7 +49,8 @@ npx spfx-fast-playwright generate tests/e2e/sharepoint-smoke.recipe.json --out t
 The output is a normal Playwright Test spec. Run it with the project's `SPFX_BASE_URL` and `storageState`:
 
 ```sh
-SPFX_BASE_URL="https://tenant.sharepoint.com/sites/your-site" npx playwright test
+SPFX_BASE_URL="https://tenant.sharepoint.com/sites/your-site" \
+SPFX_STORAGE_STATE="$HOME/.playwright-auth/workswithagents.json" npx playwright test
 ```
 
 Keep state files out of source control. They contain impersonation-capable session data. Use a dedicated least-privilege account and test site.
@@ -70,9 +71,20 @@ Promote verified findings to the smallest durable artifact: a recipe in `example
 
 To contribute the browser discovery through the shared knowledge flow, convert and review the draft with `npx --yes @spfx-fast/knowledge learn import-playwright <draft.json>`, then run `learn validate` and `learn patch`. The converter maps fields mechanically; verify the result before sharing.
 
-## Run a recipe with a persistent authenticated browser profile
+## Run a recipe with shared storage state
 
-This path is useful when a team already has a signed-in Playwright profile and does not want to export its storage state:
+```sh
+npx spfx-fast-playwright run tests/e2e/sharepoint-smoke.recipe.json \
+  --base-url "$SPFX_BASE_URL" \
+  --storage-state "$HOME/.playwright-auth/workswithagents.json" \
+  --artifacts test-results/sharepoint-smoke
+```
+
+Runs headless and saves requested screenshots, a trace, and `summary.json`. Set `SPFX_STORAGE_STATE` instead of passing `--storage-state` to share the path across commands. State is loaded into a normal browser context and is not rewritten. Use `--headed` to debug.
+
+## Legacy persistent profile mode
+
+Existing teams can continue using a signed-in Playwright profile:
 
 ```sh
 npx spfx-fast-playwright run tests/e2e/sharepoint-smoke.recipe.json \
@@ -81,7 +93,7 @@ npx spfx-fast-playwright run tests/e2e/sharepoint-smoke.recipe.json \
   --artifacts test-results/sharepoint-smoke
 ```
 
-Runs headless, enforces the origin, and saves requested screenshots, a trace, and `summary.json`. Use `--headed` to debug. The command locks the profile and releases it after browser exit. It does not sign in, inspect cookies, or copy/remove profile files.
+Runs headless, enforces the origin, and saves requested screenshots, a trace, and `summary.json`. Use `--headed` to debug. The command locks the profile and releases it after browser exit. It does not sign in, inspect cookies, or copy/remove profile files. The Workbench IDE workflow uses storage-state JSON instead.
 
 Use `--fast` during fix loops: assertions remain, successful screenshots/traces are skipped, and failures capture a screenshot. Run once without it after fixes. Use one job per profile; close any manually opened Chrome first.
 
@@ -118,7 +130,7 @@ cp node_modules/@spfx-fast/playwright/examples/tenant-crud-validation.recipe.jso
 npx spfx-fast-playwright validate tests/e2e/tenant-crud-validation.recipe.json
 npx spfx-fast-playwright run tests/e2e/tenant-crud-validation.recipe.json \
   --base-url "$SPFX_BASE_URL" \
-  --profile-dir "$SPFX_TEST_PROFILE" \
+  --storage-state "$HOME/.playwright-auth/workswithagents.json" \
   --artifacts test-results/tenant-crud
 ```
 
@@ -139,4 +151,4 @@ For a full workflow with profile, SharePoint page, image, and OCR guidance, read
 
 ## Package status
 
-This is the `0.1.2` companion package. It is framework-agnostic across SPFx projects and ships independently from `@spfx-fast/core`.
+This checkout prepares `0.1.3`; published `0.1.2` remains unchanged. It is framework-agnostic across SPFx projects and ships independently from `@spfx-fast/core`.

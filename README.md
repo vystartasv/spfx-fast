@@ -146,7 +146,11 @@ This adds `SPFX-FAST.md` and links it from `AGENTS.md`. `pnpm dlx --package @spf
 
 For authenticated package deployment, catalog installation, and tenant validation, see the [SPFx app deployment guide](docs/AGENT-SHAREPOINT-DEPLOYMENT.md).
 
-For the development loop, [`@spfx-fast/ide`](https://www.npmjs.com/package/@spfx-fast/ide) is an optional dev tool. The registry's 0.1.0 release routes to Knowledge and Playwright; prepared 0.1.1 adds Workbench preview/diagnostics and automatic skill placement. Publish Workbench 0.1.1 before IDE 0.1.1 to get those routes from a normal IDE install. IDE stays out of the web-part bundle; Core remains the app runtime for authenticated Graph/REST, caching, sync, hooks, and starters. See the IDE package's README for install and agent-discovery limits.
+For the development loop, [`@spfx-fast/ide`](https://www.npmjs.com/package/@spfx-fast/ide) is an optional dev tool. IDE 0.1.0 is the latest published release and routes to Knowledge and Playwright; IDE 0.1.1 failed publication at npm. Prepared 0.1.2 adds Workbench preview/diagnostics and automatic skill placement. Fix the IDE npm Trusted Publisher before publishing Workbench 0.1.2 and then IDE 0.1.2. Until then, normal IDE installs do not include Workbench routes or the skill hook. IDE stays out of the web-part bundle; Core remains the app runtime for authenticated Graph/REST, caching, sync, hooks, and starters. See the IDE package's README for install and agent-discovery limits.
+
+## Find the agent skill
+
+The portable `spfx-fast` skill is in this repository. Try it directly with `npx --yes skills add https://github.com/vystartasv/spfx-fast --list`; the skills.sh index follows installs and publishes no ranking guarantee. Package keywords and README text also help npm search index this toolkit.
 
 ## Install
 

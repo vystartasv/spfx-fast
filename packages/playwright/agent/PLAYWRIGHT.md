@@ -6,12 +6,12 @@ For any SPFx project. This dev tool does not require `@spfx-fast/core`.
 
 - Reuse the project's Playwright version, config, test account, and site.
 - Set `SPFX_BASE_URL` to the SharePoint **web URL**. Set `SPFX_STORAGE_STATE` only to a local ignored file when that project already uses saved state.
-- Never automate sign-in, inspect cookies, copy a daily profile, or commit auth state.
-- Run one job per persistent profile. `run` and `record` lock it; close manually opened browsers first.
+- Reuse the shared per-tenant state at `~/.playwright-auth/<tenant>.json` with `--storage-state` or `SPFX_STORAGE_STATE`. Never automate sign-in, inspect cookies, or commit state.
+- Legacy `--profile-dir` mode is supported for existing projects and locks the profile; close manually opened browsers first.
 
 ## Generate and run
 
-- Record with `spfx-fast-playwright record`; review selectors and add user-visible assertions.
+- Record with `spfx-fast-playwright record --url "$SPFX_BASE_URL" --storage-state "$HOME/.playwright-auth/$SPFX_TENANT.json" --out tests/e2e/recorded.spec.ts`; set `SPFX_TENANT` to the tenant key and review selectors and add user-visible assertions.
 - For repeatable checks, validate a JSON recipe, then `generate` or `run` it.
 - Prefer `testId` locators for stable targeting when the app exposes `data-testid`. Use role/label locators when checking accessible interaction, especially for form controls. Use `assertText` to verify user-visible content on the selected element; use text locators only when the text itself is the only useful target. Always use explicit waits; do not use generic `networkidle` on SharePoint.
 - Use `run --fast` during fixes, then run once without it.

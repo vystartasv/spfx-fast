@@ -45,14 +45,14 @@ test("init scaffolds runnable tests and refuses to overwrite an existing project
     await runProcess(process.execPath, [cli, "init"], { cwd: project, env: process.env });
     const spec = await readFile(join(project, "tests/e2e/sharepoint-smoke.spec.mjs"), "utf8");
     const config = await readFile(join(project, "playwright.config.ts"), "utf8");
-    const authIgnore = await readFile(join(project, "playwright/.auth/.gitignore"), "utf8");
     const agentGuide = await readFile(join(project, "SPFX-PLAYWRIGHT.md"), "utf8");
     const agents = await readFile(join(project, "AGENTS.md"), "utf8");
     assert.match(spec, /assertAuthenticated/);
     assert.match(spec, /@playwright\/test/);
     assert.match(config, /workers: 1/);
     assert.match(config, /retain-on-failure/);
-    assert.match(authIgnore, /^\*/);
+    assert.match(config, /SPFX_STORAGE_STATE/);
+    await assert.rejects(readFile(join(project, "playwright/.auth/.gitignore")), { code: "ENOENT" });
     assert.match(agentGuide, /never change production data/i);
     assert.match(agents, /spfx-fast-playwright:agent-instructions/);
     assert.match(agents, /SPFX-PLAYWRIGHT\.md/);
@@ -108,6 +108,56 @@ test("generated spec runs in native Playwright Test and saves its screenshot", a
   } finally {
     await new Promise((resolve) => server.close(resolve));
     await rm(workspace, { recursive: true, force: true });
+  }
+});
+
+
+test("Codegen loads shared storage state without a persistent profile", async () => {
+  const project = await mkdtemp(join(tmpdir(), "spfx-playwright-record-"));
+  const playwrightDir = join(project, "node_modules/playwright");
+  const cli = join(root, "packages/playwright/bin/spfx-fast-playwright.mjs");
+  const statePath = join(project, "shared-state.json");
+  const argsPath = join(project, "record-args.json");
+  try {
+    await mkdir(playwrightDir, { recursive: true });
+    await writeFile(join(project, "package.json"), "{}\n");
+    await writeFile(join(playwrightDir, "package.json"), JSON.stringify({ name: "playwright", main: "index.js" }));
+    await writeFile(join(playwrightDir, "index.js"), "module.exports = {};\n");
+    await writeFile(join(playwrightDir, "cli.js"), 'require("node:fs").writeFileSync(process.env.RECORD_ARGS, JSON.stringify(process.argv));\n');
+    await writeFile(statePath, JSON.stringify({ cookies: [], origins: [] }));
+    await runProcess(process.execPath, [cli, "record", "--url", "https://tenant.example/sites/test", "--storage-state", statePath, "--out", "recorded.spec.ts"], {
+      cwd: project,
+      env: { ...process.env, RECORD_ARGS: argsPath },
+    });
+    const args = JSON.parse(await readFile(argsPath, "utf8"));
+    assert.ok(args.includes(`--load-storage=${statePath}`));
+    assert.ok(!args.some((arg) => arg.startsWith("--user-data-dir=")));
+  } finally {
+    await rm(project, { recursive: true, force: true });
+  }
+});
+
+test("recipe CLI loads shared storage state without a persistent profile", async () => {
+  const server = createServer((request, response) => {
+    response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
+    response.end('<!doctype html><html lang="en"><body><p id="state"></p><script>document.querySelector("#state").textContent = localStorage.getItem("session") === "synthetic" ? "Authenticated fixture" : "No session";</script></body></html>');
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const address = server.address();
+  const project = await mkdtemp(join(tmpdir(), "spfx-playwright-state-"));
+  const cli = join(root, "packages/playwright/bin/spfx-fast-playwright.mjs");
+  const statePath = join(project, "shared-state.json");
+  const recipePath = join(project, "recipe.json");
+  try {
+    await writeFile(statePath, JSON.stringify({ cookies: [], origins: [{ origin: `http://127.0.0.1:${address.port}`, localStorage: [{ name: "session", value: "synthetic" }] }] }));
+    await writeFile(recipePath, JSON.stringify({ name: "State smoke", steps: [
+      { action: "navigate", path: "/" },
+      { action: "assertText", locator: { text: "Authenticated fixture" }, expected: "Authenticated fixture", exact: true },
+    ] }));
+    await runProcess(process.execPath, [cli, "run", recipePath, "--base-url", `http://127.0.0.1:${address.port}`, "--storage-state", statePath, "--fast"], { cwd: root, env: process.env });
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+    await rm(project, { recursive: true, force: true });
   }
 });
 
