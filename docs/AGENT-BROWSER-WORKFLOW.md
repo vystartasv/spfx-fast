@@ -7,7 +7,7 @@ The npm package includes this guide. Repository probes (`node scripts/...`) requ
 ## Signed-in SharePoint
 
 - Use a page set aside for tests. Do not edit a page another person is testing.
-- Run one job per signed-in browser profile. The SPFx Fast runner locks the profile. Close manually opened Chrome first.
+- Reuse the shared per-tenant storage-state JSON with `SPFX_STORAGE_STATE` or `--storage-state`. The runner loads it into a normal browser context and does not rewrite it. Legacy `--profile-dir` mode remains available for existing projects; use one job per profile and close manually opened Chrome first.
 - Use synthetic data. Get approval before writing. Read saved state back after a write.
 - A successful REST check proves access to that web only. It does not prove Graph access, web-part load, or write success.
 - For app-catalog upload, deployment, and site installation, follow the [ALM deployment guide](AGENT-SHAREPOINT-DEPLOYMENT.md). Do not use guessed catalog URLs or confuse catalog row IDs, package ProductIds, and web-part component IDs.
@@ -18,7 +18,7 @@ pnpm exec spfx-fast-playwright init
 pnpm exec spfx-fast-playwright validate tests/e2e/sharepoint-smoke.recipe.json
 pnpm exec spfx-fast-playwright run tests/e2e/sharepoint-smoke.recipe.json \
   --base-url "$SPFX_BASE_URL" \
-  --profile-dir "$SPFX_TEST_PROFILE" \
+  --storage-state "$HOME/.playwright-auth/workswithagents.json" \
   --artifacts test-results/sharepoint-smoke
 ```
 
