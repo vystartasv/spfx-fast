@@ -146,7 +146,7 @@ This adds `SPFX-FAST.md` and links it from `AGENTS.md`. `pnpm dlx --package @spf
 
 For authenticated package deployment, catalog installation, and tenant validation, see the [SPFx app deployment guide](docs/AGENT-SHAREPOINT-DEPLOYMENT.md).
 
-For the development loop, [`@spfx-fast/ide`](https://www.npmjs.com/package/@spfx-fast/ide) is an optional dev tool. IDE 0.1.2 is published with Workbench preview/diagnostics routes and automatic skill placement; IDE 0.1.1 failed at npm before its Trusted Publisher was corrected. Workbench 0.1.2 is published, and this checkout prepares Workbench 0.1.3 and IDE 0.1.4. IDE stays out of the web-part bundle; Core remains the app runtime for authenticated Graph/REST, caching, sync, hooks, and starters. See the IDE package's README for install and agent-discovery limits.
+For the development loop, [`@spfx-fast/ide`](https://www.npmjs.com/package/@spfx-fast/ide) is an optional dev tool that routes agents to preview, diagnostics, SPFx knowledge, Playwright, and artifact inspection. It stays out of the web-part bundle. Core remains the app runtime for authenticated Graph/REST, caching, sync, hooks, and starters. See the IDE package's README for setup and agent-discovery details.
 
 ## Find the agent skill
 
@@ -174,5 +174,3 @@ React hooks and generated UI use optional peers. Install React 18 and Fluent UI 
 - [SPFx knowledge skill and debugging package](https://github.com/vystartasv/spfx-fast/tree/main/packages/knowledge)
 - [Contribute a reusable finding](https://github.com/vystartasv/spfx-fast/blob/main/CONTRIBUTING.md#knowledge-contributions)
 - [SharePoint UI learning and Playwright tools](https://github.com/vystartasv/spfx-fast/tree/main/packages/playwright)
-- [Release notes and checks](https://github.com/vystartasv/spfx-fast/blob/main/docs/RELEASE.md)
-- [GitHub build and npm publishing](https://github.com/vystartasv/spfx-fast/blob/main/docs/RELEASE.md#publish-from-github)

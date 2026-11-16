@@ -56,6 +56,6 @@ Use cases include generic Power Automate patterns; customers configure tenant-sp
 - Graph delta gives current state, not event history or notifications.
 - Some APIs are raw-only, legacy, tenant-dependent, or service-hosted. See [API coverage](API-COVERAGE.md).
 
-## Release status
+## Package contents
 
-The roadmap and catalog ship in npm. See [release notes](RELEASE.md). Local builds do not prove tenant behavior; run the signed-in checks above.
+The roadmap and catalog are included with the package. Local builds do not prove tenant behavior; run the signed-in checks above.

@@ -151,4 +151,4 @@ For a full workflow with profile, SharePoint page, image, and OCR guidance, read
 
 ## Package status
 
-Version `0.1.3` is published with shared storage-state support for `run` and `record`, while retaining `--profile-dir` for existing projects. This checkout prepares `0.1.4` with current package status. It is framework-agnostic across SPFx projects and ships independently from `@spfx-fast/core`.
+Shared storage-state support lets `run` and `record` reuse the same manual-login state as Workbench. Existing projects can continue to use `--profile-dir`. The package works across SPFx projects and ships independently from `@spfx-fast/core`.

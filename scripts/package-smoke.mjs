@@ -71,7 +71,6 @@ try {
     "docs/USE-CASES.md",
     "docs/ROADMAP.md",
     "docs/TENANT-VALIDATION.md",
-    "docs/RELEASE.md",
     "examples/ListContentTypes.ts",
     "examples/UserProfiles.ts",
     "examples/Versions.ts",
